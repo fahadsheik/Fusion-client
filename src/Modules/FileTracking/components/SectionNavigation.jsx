@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Group, Text, Box, Container } from "@mantine/core";
 import { CaretLeft, CaretRight } from "@phosphor-icons/react";
 import Compose from "./ComposeFile";
+import Outbox from "./Outbox";
 
 const sections = [
   "Compose File",
@@ -12,28 +13,22 @@ const sections = [
   "Archive",
 ];
 
-// const subSections = {
-//   Leave: ["Leave Form", "Leave Status"],
-// };
-
-// Create a map of components for each section
+// Map components to sections
 const sectionComponents = {
   "Compose File": Compose,
-
-  // Add other components here for different sections if needed
-  // 'My Fine': MyFineComponent,
-  // 'Leave': LeaveComponent,
-  // etc.
+  Outbox,
+  // Add other components if needed
 };
 
 export default function SectionNavigation() {
-  const [activeSection, setActiveSection] = useState("Notice Board");
+  const [activeSection, setActiveSection] = useState("Compose File");
 
   // Get the component for the active section
   const ActiveComponent = sectionComponents[activeSection];
 
   return (
     <Container size="xl" p="xs">
+      {/* Section navigation */}
       <Group
         spacing="xs"
         noWrap
@@ -60,31 +55,11 @@ export default function SectionNavigation() {
         <CaretRight size={20} weight="bold" color="#718096" />
       </Group>
 
-      {/* {subSections[activeSection] && (
-        <Group spacing="xs" mt="xs">
-          {subSections[activeSection].map((subSection, index) => (
-            <React.Fragment key={subSection}>
-              <Text
-                size="sm"
-                color="#4299E1"
-                style={{ cursor: "pointer", whiteSpace: "nowrap" }}
-              >
-                {subSection}
-              </Text>
-              {index < subSections[activeSection].length - 1 && (
-                <Text color="#CBD5E0" size="sm">
-                  |
-                </Text>
-              )}
-            </React.Fragment>
-          ))}
-        </Group>
-      )} */}
-
+      {/* Render the active section component */}
       <Box
         mt="md"
         style={{
-          color: "F5F7F8",
+          color: "#F5F7F8",
           border: "2px solid rgba(0, 0, 0, 0.3)",
           height: "500px",
           width: "100%",
