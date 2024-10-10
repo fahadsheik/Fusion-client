@@ -12,13 +12,14 @@ const sections = [
   "Archive",
 ];
 
-const subSections = {
-  Leave: ["Leave Form", "Leave Status"],
-};
+// const subSections = {
+//   Leave: ["Leave Form", "Leave Status"],
+// };
 
 // Create a map of components for each section
 const sectionComponents = {
   "Compose File": Compose,
+
   // Add other components here for different sections if needed
   // 'My Fine': MyFineComponent,
   // 'Leave': LeaveComponent,
@@ -59,7 +60,7 @@ export default function SectionNavigation() {
         <CaretRight size={20} weight="bold" color="#718096" />
       </Group>
 
-      {subSections[activeSection] && (
+      {/* {subSections[activeSection] && (
         <Group spacing="xs" mt="xs">
           {subSections[activeSection].map((subSection, index) => (
             <React.Fragment key={subSection}>
@@ -78,7 +79,7 @@ export default function SectionNavigation() {
             </React.Fragment>
           ))}
         </Group>
-      )}
+      )} */}
 
       <Box
         mt="md"
