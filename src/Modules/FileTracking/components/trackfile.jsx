@@ -71,7 +71,7 @@ export default function Track() {
                 Archive
               </th>
               <th style={{ padding: "12px", border: "1px solid #ddd" }}>
-                Sent ad
+                File type
               </th>
               <th style={{ padding: "12px", border: "1px solid #ddd" }}>
                 Sent To
