@@ -20,7 +20,7 @@ const sections = [
 // Create a map of components for each section
 const sectionComponents = {
   "Compose File": Compose,
-  Track,
+  "Track": Track,
 
   // Add other components here for different sections if needed
   // 'My Fine': MyFineComponent,
