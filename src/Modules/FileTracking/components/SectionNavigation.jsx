@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Group, Text, Box, Container } from "@mantine/core";
 import { CaretLeft, CaretRight } from "@phosphor-icons/react";
 import Compose from "./ComposeFile";
+import Track from "./trackfile";
 
 const sections = [
   "Compose File",
@@ -19,6 +20,7 @@ const sections = [
 // Create a map of components for each section
 const sectionComponents = {
   "Compose File": Compose,
+  Track,
 
   // Add other components here for different sections if needed
   // 'My Fine': MyFineComponent,
