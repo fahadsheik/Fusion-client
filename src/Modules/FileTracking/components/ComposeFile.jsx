@@ -7,18 +7,50 @@ import {
   TextInput,
   Textarea,
   Title,
+  ActionIcon,
+  Text,
 } from "@mantine/core";
-import { Upload } from "@phosphor-icons/react";
+import { Upload, FloppyDisk } from "@phosphor-icons/react";
 
 export default function Compose() {
+  const handleSaveDraft = () => {
+    console.log("Saved as Draft");
+    // Add the draft save logic here
+  };
+
   return (
     <Card
       shadow="sm"
       padding="lg"
       radius="md"
       withBorder
-      style={{ backgroundColor: "#F5F7F8" }}
+      style={{ backgroundColor: "#F5F7F8", position: "relative" }}
     >
+      {/* Icon at Top Right with Text Beneath */}
+      <Box
+        style={{
+          position: "absolute",
+          top: "16px",
+          right: "16px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <ActionIcon
+          size="lg"
+          variant="outline"
+          color="blue"
+          onClick={handleSaveDraft}
+          title="Save as Draft"
+        >
+          <FloppyDisk size={20} />
+        </ActionIcon>
+        <Text color="blue" size="xs" mt={4}>
+          Save as Draft
+        </Text>
+      </Box>
+
       <Title order={2} mb="md">
         Compose File
       </Title>
@@ -59,6 +91,7 @@ export default function Compose() {
           placeholder="Enter receiver designation"
           mb="sm"
         />
+
         <Button
           type="submit"
           color="blue"

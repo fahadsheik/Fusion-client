@@ -1,8 +1,13 @@
+/* eslint-disable prettier/prettier */
 import React, { useState } from "react";
 import { Group, Text, Box, Container } from "@mantine/core";
 import { CaretLeft, CaretRight } from "@phosphor-icons/react";
 import Compose from "./ComposeFile";
-import Outbox from "./Outbox";
+import Outboxfunc from "./Outbox";
+import Inboxfunc from "./Inbox";
+import Track from "./Track";
+import Draft from "./Drafts";
+import ArchiveFiles from "./Archive";
 
 const sections = [
   "Compose File",
@@ -13,11 +18,13 @@ const sections = [
   "Archive",
 ];
 
-// Map components to sections
 const sectionComponents = {
   "Compose File": Compose,
-  Outbox,
-  // Add other components if needed
+  Outbox: Outboxfunc,
+  Inbox: Inboxfunc,
+  Track,
+  Drafts: Draft,
+  Archive: ArchiveFiles,
 };
 
 export default function SectionNavigation() {

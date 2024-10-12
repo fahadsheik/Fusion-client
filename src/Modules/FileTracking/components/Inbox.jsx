@@ -8,29 +8,33 @@ import {
   ActionIcon,
   Tooltip,
 } from "@mantine/core";
-import { ArrowArcRight, Eye } from "@phosphor-icons/react";
+import { Archive, Eye } from "@phosphor-icons/react";
 import ViewFiles from "./ViewFile";
 
-export default function Outboxfunc() {
-  const [files] = useState([
+export default function Inboxfunc() {
+  const [files, setFiles] = useState([
     {
       fileType: "PDF",
-      sentTo: "Employee-Myself",
+      sentBy: "22BCSD04-Student",
       fileID: "CSE-2023-11-#596",
       subject: "Fusion Project Module",
       date: "Nov 16, 2023, 11:26 p.m",
     },
     {
       fileType: "PDF",
-      sentTo: "Employee-Myself",
+      sentBy: "22BCSD04-Student",
       fileID: "CSE-2023-11-#597",
       subject: "Another Project Module",
       date: "Nov 16, 2023, 11:26 p.m",
     },
   ]);
 
-  // State to manage the selected file for viewing
   const [selectedFile, setSelectedFile] = useState(null);
+
+  const handleArchive = (fileID) => {
+    const updatedFiles = files.filter((file) => file.fileID !== fileID);
+    setFiles(updatedFiles);
+  };
 
   const handleViewFile = (file) => {
     setSelectedFile(file);
@@ -38,6 +42,14 @@ export default function Outboxfunc() {
 
   const handleBack = () => {
     setSelectedFile(null);
+  };
+
+  const handleMouseEnter = (e) => {
+    e.target.style.backgroundColor = e.target.dataset.hoverColor; // Set hover color
+  };
+
+  const handleMouseLeave = (e) => {
+    e.target.style.backgroundColor = e.target.dataset.defaultColor; // Reset to default
   };
 
   return (
@@ -50,10 +62,9 @@ export default function Outboxfunc() {
     >
       {!selectedFile && (
         <Title order={2} mb="md">
-          Outbox
+          Inbox
         </Title>
       )}
-
       {selectedFile ? (
         <div>
           <Title order={3} mb="md">
@@ -88,13 +99,13 @@ export default function Outboxfunc() {
                     border: "1px solid #ddd",
                   }}
                 >
-                  Forward
+                  Archive
                 </th>
                 <th style={{ padding: "12px", border: "1px solid #ddd" }}>
-                  Sent as
+                  Received as
                 </th>
                 <th style={{ padding: "12px", border: "1px solid #ddd" }}>
-                  Sent To
+                  Sent By
                 </th>
                 <th style={{ padding: "12px", border: "1px solid #ddd" }}>
                   File ID
@@ -126,25 +137,22 @@ export default function Outboxfunc() {
                       border: "1px solid #ddd",
                     }}
                   >
-                    <Tooltip label="Forward" position="top" withArrow>
+                    <Tooltip label="Archive file" position="top" withArrow>
                       <ActionIcon
                         variant="light"
                         color="red"
+                        onClick={() => handleArchive(file.fileID)}
                         style={{
                           transition: "background-color 0.3s",
                           width: "2rem",
                           height: "2rem",
                         }}
-                        // eslint-disable-next-line no-return-assign
-                        onMouseEnter={(e) =>
-                          (e.target.style.backgroundColor = "#ffebee")
-                        }
-                        // eslint-disable-next-line no-return-assign
-                        onMouseLeave={(e) =>
-                          (e.target.style.backgroundColor = "transparent")
-                        }
+                        data-default-color="transparent" // Store default color
+                        data-hover-color="#ffebee" // Store hover color
+                        onMouseEnter={handleMouseEnter} // Handle mouse enter
+                        onMouseLeave={handleMouseLeave} // Handle mouse leave
                       >
-                        <ArrowArcRight size="1rem" />
+                        <Archive size="1rem" />
                       </ActionIcon>
                     </Tooltip>
                   </td>
@@ -166,7 +174,7 @@ export default function Outboxfunc() {
                       textAlign: "center",
                     }}
                   >
-                    {file.sentTo}
+                    {file.sentBy}
                   </td>
                   <td
                     style={{
@@ -195,6 +203,7 @@ export default function Outboxfunc() {
                   >
                     {file.date}
                   </td>
+
                   <td
                     style={{
                       padding: "12px",
@@ -211,15 +220,11 @@ export default function Outboxfunc() {
                         width: "2rem",
                         height: "2rem",
                       }}
+                      data-default-color="white" // Store default color
+                      data-hover-color="#e0e0e0" // Store hover color
+                      onMouseEnter={handleMouseEnter} // Handle mouse enter
+                      onMouseLeave={handleMouseLeave} // Handle mouse leave
                       onClick={() => handleViewFile(file)}
-                      // eslint-disable-next-line no-return-assign
-                      onMouseEnter={(e) =>
-                        (e.target.style.backgroundColor = "#e0e0e0")
-                      }
-                      // eslint-disable-next-line no-return-assign
-                      onMouseLeave={(e) =>
-                        (e.target.style.backgroundColor = "white")
-                      }
                     >
                       <Eye size="1rem" />
                     </ActionIcon>
