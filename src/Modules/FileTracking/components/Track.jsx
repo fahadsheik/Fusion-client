@@ -10,7 +10,7 @@ import {
   Tooltip,
 } from "@mantine/core";
 import { Archive, Eye } from "@phosphor-icons/react";
-import ViewFiles from "./ViewFile";
+import ViewFiles from "./viewFile";
 
 export default function Track() {
   const [files, setFiles] = useState([

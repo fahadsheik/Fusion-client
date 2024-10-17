@@ -8,8 +8,9 @@ import {
   Tooltip,
   Badge,
 } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
 import { ArrowArcLeft, Archive, Eye } from "@phosphor-icons/react";
-import ViewFiles from "./ViewFile";
+import ViewFiles from "./viewFile";
 
 export default function ArchiveFiles() {
   const [files, setFiles] = useState([
@@ -23,9 +24,17 @@ export default function ArchiveFiles() {
     },
     {
       fileType: "PDF",
-      sentBy: "22BCSD04-Student",
+      sentBy: "22BCS031-Student",
       fileID: "CSE-2023-11-#597",
-      subject: "Another Project Module",
+      subject: "LaundriX Project Module",
+      date: "Nov 16, 2023, 11:26 p.m",
+      archived: true,
+    },
+    {
+      fileType: "PDF",
+      sentBy: "22BCS273-Student",
+      fileID: "CSE-2023-11-#597",
+      subject: "LogistiX Project Module",
       date: "Nov 16, 2023, 11:26 p.m",
       archived: true,
     },
@@ -34,6 +43,11 @@ export default function ArchiveFiles() {
   const [selectedFile, setSelectedFile] = useState(null);
 
   const handleToggleArchive = (fileID) => {
+    notifications.show({
+      title: "File archived",
+      message: "The file has been successfully archived",
+      color: "blue",
+    });
     const updatedFiles = files.map((file) =>
       file.fileID === fileID ? { ...file, archived: !file.archived } : file,
     );

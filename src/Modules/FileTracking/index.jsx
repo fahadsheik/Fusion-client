@@ -1,6 +1,6 @@
 import React from "react";
 import { useMantineTheme } from "@mantine/core";
-import SectionNavigation from "./components/SectionNavigation";
+import SectionNavigation from "./components/sectionNavigation";
 
 function FileTracking() {
   const theme = useMantineTheme();

@@ -9,7 +9,7 @@ import {
   Tooltip,
 } from "@mantine/core";
 import { ArrowArcRight, Eye } from "@phosphor-icons/react";
-import ViewFiles from "./ViewFile";
+import ViewFiles from "./viewFile";
 
 export default function Outboxfunc() {
   const [files] = useState([

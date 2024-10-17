@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Group, Text, Box, Container } from "@mantine/core";
 import { CaretLeft, CaretRight } from "@phosphor-icons/react";
-import Compose from "./ComposeFile";
+import Compose from "./composeFile";
 import Outboxfunc from "./Outbox";
 import Inboxfunc from "./Inbox";
 import Track from "./Track";
