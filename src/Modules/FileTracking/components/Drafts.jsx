@@ -10,7 +10,8 @@ import {
   Tooltip,
 } from "@mantine/core";
 import { Archive, Eye } from "@phosphor-icons/react";
-import ViewFiles from "./ViewFile";
+import { notifications } from "@mantine/notifications";
+import ViewFiles from "./viewFile";
 
 export default function Draft() {
   const [files, setFiles] = useState([
@@ -34,7 +35,15 @@ export default function Draft() {
     // Update the list by filtering out the archived file
     setFiles((prevFiles) => prevFiles.filter((file) => file.fileID !== fileID));
   };
-
+  const handleDeleteFile = (fileID) => {
+    // Update the list by filtering out the deleted file
+    setFiles((prevFiles) => prevFiles.filter((file) => file.fileID !== fileID));
+    notifications.show({
+      title: "File deleted",
+      message: "The file has been successfully deleted",
+      color: "red",
+    });
+  };
   const handleViewFile = (file) => {
     setSelectedFile(file);
   };
@@ -219,6 +228,7 @@ export default function Draft() {
                       onMouseLeave={(e) =>
                         (e.target.style.backgroundColor = "white")
                       }
+                      onClick={() => handleDeleteFile(file.fileID)}
                     >
                       Delete file
                     </Button>

@@ -11,11 +11,14 @@ import {
   Text,
 } from "@mantine/core";
 import { Upload, FloppyDisk } from "@phosphor-icons/react";
+import { notifications } from "@mantine/notifications";
 
 export default function Compose() {
   const handleSaveDraft = () => {
-    console.log("Saved as Draft");
-    // Add the draft save logic here
+    notifications.show({
+      title: "Draft Saved",
+      message: "File has been saved as draft",
+    });
   };
 
   return (
