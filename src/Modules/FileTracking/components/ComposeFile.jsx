@@ -9,6 +9,7 @@ import {
   Title,
   ActionIcon,
   Text,
+  Select,
 } from "@mantine/core";
 import { Upload, FloppyDisk } from "@phosphor-icons/react";
 import { notifications } from "@mantine/notifications";
@@ -80,8 +81,9 @@ export default function Compose() {
           label="Attach file (PDF, JPG, PNG) (MAX: 10MB)"
           placeholder="Upload file"
           accept="application/pdf,image/jpeg,image/png"
-          icon={<Upload size={14} />}
+          icon={<Upload size={16} />} // Icon size corrected
           mb="sm"
+          withAsterisk
         />
         <Textarea label="Remark" placeholder="Enter remark" mb="sm" />
         <TextInput
@@ -89,9 +91,15 @@ export default function Compose() {
           placeholder="Enter forward recipient"
           mb="sm"
         />
-        <TextInput
+        {/* Receiver Designation as a dropdown */}
+        <Select
           label="Receiver Designation"
-          placeholder="Enter receiver designation"
+          placeholder="Select designation"
+          data={[
+            { value: "Proffessor", label: "Proffessor" },
+            { value: "Student", label: "Student" },
+            { value: "Employee", label: "Employee" },
+          ]}
           mb="sm"
         />
 

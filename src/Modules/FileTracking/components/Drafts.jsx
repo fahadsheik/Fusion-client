@@ -9,9 +9,9 @@ import {
   ActionIcon,
   Tooltip,
 } from "@mantine/core";
-import { Archive, Eye } from "@phosphor-icons/react";
+import { Archive, PencilSimple } from "@phosphor-icons/react";
 import { notifications } from "@mantine/notifications";
-import ViewFiles from "./viewFile";
+import EditDraft from "./EditDraft";
 
 export default function Draft() {
   const [files, setFiles] = useState([
@@ -29,14 +29,13 @@ export default function Draft() {
     },
   ]);
 
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [editFile, setEditFile] = useState(null); // File being edited
 
   const handleArchive = (fileID) => {
-    // Update the list by filtering out the archived file
     setFiles((prevFiles) => prevFiles.filter((file) => file.fileID !== fileID));
   };
+
   const handleDeleteFile = (fileID) => {
-    // Update the list by filtering out the deleted file
     setFiles((prevFiles) => prevFiles.filter((file) => file.fileID !== fileID));
     notifications.show({
       title: "File deleted",
@@ -44,12 +43,13 @@ export default function Draft() {
       color: "red",
     });
   };
-  const handleViewFile = (file) => {
-    setSelectedFile(file);
+
+  const handleEditFile = (file) => {
+    setEditFile(file); // Set the file to edit mode
   };
 
   const handleBack = () => {
-    setSelectedFile(null);
+    setEditFile(null); // Exit edit mode and go back
   };
 
   return (
@@ -60,18 +60,14 @@ export default function Draft() {
       withBorder
       style={{ backgroundColor: "#F5F7F8", maxWidth: "100%" }}
     >
-      {!selectedFile && (
+      {!editFile && (
         <Title order={2} mb="md">
           Drafts
         </Title>
       )}
-      {selectedFile ? (
-        <div>
-          <Title order={3} mb="md">
-            File Subject: {selectedFile.subject}
-          </Title>
-          <ViewFiles file={selectedFile} onBack={handleBack} />
-        </div>
+
+      {editFile ? (
+        <EditDraft file={editFile} onBack={handleBack} />
       ) : (
         <Box
           style={{
@@ -129,7 +125,7 @@ export default function Draft() {
                     border: "1px solid #ddd",
                   }}
                 >
-                  View File
+                  Edit Draft
                 </th>
               </tr>
             </thead>
@@ -147,7 +143,7 @@ export default function Draft() {
                       <ActionIcon
                         variant="light"
                         color="red"
-                        onClick={() => handleArchive(file.fileID)} // Correct usage
+                        onClick={() => handleArchive(file.fileID)}
                         style={{
                           transition: "background-color 0.3s",
                           width: "2rem",
@@ -175,7 +171,7 @@ export default function Draft() {
                     }}
                   >
                     <Badge color="gray" style={{ fontSize: "12px" }}>
-                      {file.fileType}
+                      File type: {file.fileType}
                     </Badge>
                   </td>
                   <td
@@ -249,7 +245,7 @@ export default function Draft() {
                         width: "2rem",
                         height: "2rem",
                       }}
-                      onClick={() => handleViewFile(file)} // Correct usage
+                      onClick={() => handleEditFile(file)} // Switch to edit mode
                       // eslint-disable-next-line no-return-assign
                       onMouseEnter={(e) =>
                         (e.currentTarget.style.backgroundColor = "#e0e0e0")
@@ -259,7 +255,7 @@ export default function Draft() {
                         (e.currentTarget.style.backgroundColor = "white")
                       }
                     >
-                      <Eye size="1rem" />
+                      <PencilSimple size="1rem" />
                     </ActionIcon>
                   </td>
                 </tr>

@@ -1,17 +1,39 @@
 import { useState } from "react";
-import { Card, Box, Textarea, Button, TextInput, Title } from "@mantine/core";
+import {
+  Card,
+  Box,
+  Textarea,
+  Button,
+  TextInput,
+  Title,
+  ActionIcon,
+} from "@mantine/core";
 import {
   ArrowLeft,
   PaperPlaneTilt,
   ChatCircleDots,
+  Trash,
 } from "@phosphor-icons/react";
+import { notifications } from "@mantine/notifications"; // Import notifications
 
 // eslint-disable-next-line react/prop-types
-export default function ViewFiles({ onBack }) {
+export default function ViewFiles({ onBack, onDelete }) {
   const [activeSection, setActiveSection] = useState(null);
 
   const toggleSection = (section) => {
     setActiveSection(activeSection === section ? null : section);
+  };
+
+  const handleDelete = () => {
+    // Show notification on file deletion
+    notifications.show({
+      title: "File Deleted",
+      message: "The file has been successfully deleted.",
+      color: "red",
+    });
+
+    // Call the onDelete function passed from the parent
+    onDelete();
   };
 
   return (
@@ -27,7 +49,12 @@ export default function ViewFiles({ onBack }) {
       }}
     >
       <Box
-        style={{ display: "flex", alignItems: "center", marginBottom: "1rem" }}
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "1rem",
+        }}
       >
         <Button
           variant="subtle"
@@ -39,6 +66,16 @@ export default function ViewFiles({ onBack }) {
         <Title order={2} style={{ flexGrow: 1, textAlign: "center" }}>
           Title of file
         </Title>
+        <ActionIcon
+          color="red"
+          variant="light"
+          size="lg"
+          onClick={handleDelete} // Call handleDelete on click
+          title="Delete File"
+          style={{ marginLeft: "auto" }}
+        >
+          <Trash size={24} />
+        </ActionIcon>
       </Box>
 
       <Box
