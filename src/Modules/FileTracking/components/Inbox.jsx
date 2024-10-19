@@ -9,6 +9,7 @@ import {
   Tooltip,
 } from "@mantine/core";
 import { Archive, Eye } from "@phosphor-icons/react";
+// eslint-disable-next-line import/no-unresolved
 import ViewFiles from "./viewFile";
 
 export default function Inboxfunc() {

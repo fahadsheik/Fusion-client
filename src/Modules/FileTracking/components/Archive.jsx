@@ -63,9 +63,9 @@ export default function ArchiveFiles() {
   };
 
   const tableStyles = {
-    border: "1px solid #ddd",
     padding: "12px",
     textAlign: "center",
+    border: "1px solid #ddd",
   };
 
   return (
@@ -78,7 +78,7 @@ export default function ArchiveFiles() {
     >
       {!selectedFile && (
         <Title order={2} mb="md">
-          Archived files
+          Archived Files
         </Title>
       )}
 
@@ -101,17 +101,21 @@ export default function ArchiveFiles() {
         >
           <Table
             highlightOnHover
-            style={{ width: "100%", tableLayout: "fixed" }}
+            style={{
+              width: "100%",
+              borderCollapse: "collapse",
+              tableLayout: "fixed",
+            }}
           >
             <thead>
               <tr style={{ backgroundColor: "#F0F0F0" }}>
-                <th style={{ ...tableStyles, width: "7%" }}>Unarchive</th>
-                <th style={tableStyles}>Received as</th>
-                <th style={tableStyles}>Sent by</th>
-                <th style={tableStyles}>File ID</th>
-                <th style={tableStyles}>Subject</th>
-                <th style={tableStyles}>Date</th>
-                <th style={{ ...tableStyles, width: "8.5%" }}>View File</th>
+                <th style={{ ...tableStyles, width: "8%" }}>Unarchive</th>
+                <th style={{ ...tableStyles, width: "12%" }}>Received As</th>
+                <th style={{ ...tableStyles, width: "18%" }}>Sent By</th>
+                <th style={{ ...tableStyles, width: "15%" }}>File ID</th>
+                <th style={{ ...tableStyles, width: "25%" }}>Subject</th>
+                <th style={{ ...tableStyles, width: "15%" }}>Date</th>
+                <th style={{ ...tableStyles, width: "7%" }}>View File</th>
               </tr>
             </thead>
             <tbody>
