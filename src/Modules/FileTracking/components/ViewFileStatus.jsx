@@ -107,7 +107,7 @@ export default function FileStatusPage({ onBack, onDelete }) {
               leftIcon={isPaused ? <Play size={24} /> : <Pause size={24} />}
               color="yellow"
               onClick={handlePauseResume}
-              style={{ width: "30%" }}
+              style={{ width: "10%", marginRight: "10px", marginLeft: "25px" }}
             >
               {isPaused ? "Resume" : "Pause"}
             </Button>
@@ -115,7 +115,7 @@ export default function FileStatusPage({ onBack, onDelete }) {
               leftIcon={<X size={24} />}
               color="red"
               onClick={handleCancel}
-              style={{ width: "30%" }}
+              style={{ width: "10%", marginRight: "10px", marginLeft: "70%" }}
             >
               Cancel
             </Button>

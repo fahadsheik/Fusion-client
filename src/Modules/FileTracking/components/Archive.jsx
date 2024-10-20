@@ -10,7 +10,7 @@ import {
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { ArrowArcLeft, Archive, Eye } from "@phosphor-icons/react";
-import ViewFiles from "./viewFile";
+import ViewFiles from "./ViewFile";
 
 export default function ArchiveFiles() {
   const [files, setFiles] = useState([
@@ -33,7 +33,7 @@ export default function ArchiveFiles() {
     {
       fileType: "PDF",
       sentBy: "22BCS273-Student",
-      fileID: "CSE-2023-11-#597",
+      fileID: "CSE-2023-11-#598",
       subject: "LogistiX Project Module",
       date: "Nov 16, 2023, 11:26 p.m",
       archived: true,
@@ -43,15 +43,22 @@ export default function ArchiveFiles() {
   const [selectedFile, setSelectedFile] = useState(null);
 
   const handleToggleArchive = (fileID) => {
-    notifications.show({
-      title: "File archived",
-      message: "The file has been successfully archived",
-      color: "blue",
+    const updatedFiles = files.map((file) => {
+      // Only update the file that matches the clicked fileID
+      if (file.fileID === fileID) {
+        const newArchivedState = !file.archived;
+        notifications.show({
+          title: newArchivedState ? "File Archived" : "File Unarchived",
+          message: newArchivedState
+            ? "The file has been successfully archived"
+            : "The file has been successfully unarchived",
+          color: newArchivedState ? "blue" : "green",
+        });
+        return { ...file, archived: newArchivedState }; // Toggle archived state
+      }
+      return file;
     });
-    const updatedFiles = files.map((file) =>
-      file.fileID === fileID ? { ...file, archived: !file.archived } : file,
-    );
-    setFiles(updatedFiles);
+    setFiles(updatedFiles); // Update state with the new file list
   };
 
   const handleViewFile = (file) => {
@@ -129,7 +136,7 @@ export default function ArchiveFiles() {
                     >
                       <ActionIcon
                         variant="light"
-                        color={file.archived ? "red" : "green"}
+                        color={file.archived ? "green" : "red"}
                         onClick={() => handleToggleArchive(file.fileID)}
                         style={{ width: "2rem", height: "2rem" }}
                       >

@@ -96,7 +96,7 @@ export default function Compose() {
           label="Receiver Designation"
           placeholder="Select designation"
           data={[
-            { value: "Proffessor", label: "Proffessor" },
+            { value: "Professor", label: "Professor" },
             { value: "Student", label: "Student" },
             { value: "Employee", label: "Employee" },
           ]}

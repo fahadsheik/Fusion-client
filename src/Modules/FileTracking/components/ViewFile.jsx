@@ -14,7 +14,7 @@ import {
   ChatCircleDots,
   Trash,
 } from "@phosphor-icons/react";
-import { notifications } from "@mantine/notifications"; // Import notifications
+import { notifications } from "@mantine/notifications";
 
 // eslint-disable-next-line react/prop-types
 export default function ViewFiles({ onBack, onDelete }) {
@@ -25,14 +25,12 @@ export default function ViewFiles({ onBack, onDelete }) {
   };
 
   const handleDelete = () => {
-    // Show notification on file deletion
     notifications.show({
       title: "File Deleted",
       message: "The file has been successfully deleted.",
       color: "red",
     });
 
-    // Call the onDelete function passed from the parent
     onDelete();
   };
 
@@ -102,10 +100,10 @@ export default function ViewFiles({ onBack, onDelete }) {
         }}
       >
         <Button
-          leftIcon={<PaperPlaneTilt size={24} />}
+          leftIcon={<PaperPlaneTilt size={24} color="white" />}
           onClick={() => toggleSection("forward")}
           color="blue"
-          style={{ width: "10%", marginRight: "10px", marginLeft: "15px" }}
+          style={{ width: "10%", marginRight: "10px", marginLeft: "25px" }}
         >
           Forward
         </Button>
@@ -113,7 +111,7 @@ export default function ViewFiles({ onBack, onDelete }) {
           leftIcon={<ChatCircleDots size={24} />}
           onClick={() => toggleSection("feedback")}
           color="blue"
-          style={{ width: "10%" }}
+          style={{ width: "10%", marginRight: "10px", marginLeft: "70%" }}
         >
           Feedback
         </Button>

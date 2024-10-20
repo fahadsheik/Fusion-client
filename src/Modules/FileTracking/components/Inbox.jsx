@@ -10,7 +10,7 @@ import {
 } from "@mantine/core";
 import { Archive, Eye } from "@phosphor-icons/react";
 // eslint-disable-next-line import/no-unresolved
-import ViewFiles from "./viewFile";
+import ViewFiles from "./ViewFile";
 
 export default function Inboxfunc() {
   const [files, setFiles] = useState([
