@@ -4,6 +4,10 @@
   "trailingComma": "all",
   "semi": true,
   "singleQuote": false,
+<<<<<<< HEAD
   "printWidth": 80,
   "endOfLine": "auto"
+=======
+  "printWidth": 80
+>>>>>>> 5cf86e3fc525b3b734449ee66aea88b2d05ae6a8
 }

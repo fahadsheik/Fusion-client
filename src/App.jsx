@@ -11,6 +11,7 @@ import AcademicPage from "./Modules/Academic/index";
 import ValidateAuth from "./helper/validateauth";
 import FacultyProfessionalProfile from "./Modules/facultyProfessionalProfile/facultyProfessionalProfile";
 
+
 export default function App() {
   const location = useLocation();
   return (
