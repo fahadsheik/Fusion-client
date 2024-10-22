@@ -220,6 +220,7 @@ import PublicationMaster from "../Profile/Publications/PublicationsMaster";
 import OtherMaster from "../Profile/Others/OtherMaster";
 import MyProfileMaster from "../Profile/MyProfile/MyProfileMaster";
 import classes from "../../Dashboard/Dashboard.module.css"; // Ensure the CSS module is properly set
+import ProjectManagementFormMaster from "../Profile/ProjectManagementForms/ProjectManagementFormMaster";
 
 function ProfileButtons() {
   const [activeTab, setActiveTab] = useState("0");
@@ -235,6 +236,7 @@ function ProfileButtons() {
     { title: "Conference/Synopsium", component: <ConferenceMaster /> },
     { title: "Others", component: <OtherMaster /> },
     { title: "My Profile", component: <MyProfileMaster /> },
+    { title: "Project Management Forms", component: <ProjectManagementFormMaster /> },
   ];
 
   // Handle tab change (previous/next)
