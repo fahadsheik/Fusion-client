@@ -12,7 +12,9 @@ import {
   Textarea,
   Button,
   Table,
+  Title,
 } from "@mantine/core";
+import { FloppyDisk } from "@phosphor-icons/react";
 
 export default function RequestForExtensionOfProject() {
   const [inputs, setInputs] = useState({
@@ -74,7 +76,10 @@ export default function RequestForExtensionOfProject() {
   return (
     <MantineProvider withGlobalStyles withNormalizeCSS>
       <Container size="2xl" mt="xl">
-        <Paper shadow="xs" p="md" withBorder style={{ borderLeft: "8px solid #2185d0" }}>
+        <Paper shadow="xs" p="md" withBorder style={{ borderLeft: "8px solid #2185d0", backgroundColor: "#f9fafb" }}>
+        <Title order={2} mb="sm" style={{ color: "#2185d0" }}>
+            Add a Request For Extension Of Project
+          </Title>
           <form onSubmit={handleSubmit}>
             <Grid gutter="md">
               <Grid.Col span={4}>
@@ -84,6 +89,7 @@ export default function RequestForExtensionOfProject() {
                   placeholder="Enter project number"
                   value={inputs.projectNo}
                   onChange={(e) => setInputs({ ...inputs, projectNo: e.target.value })}
+                  style={{ padding: "10px" }}
                 />
               </Grid.Col>
               <Grid.Col span={4}>
@@ -93,6 +99,7 @@ export default function RequestForExtensionOfProject() {
                   min={0}
                   value={inputs.previousDuration}
                   onChange={(value) => setInputs({ ...inputs, previousDuration: value })}
+                  style={{ padding: "10px" }}
                 />
               </Grid.Col>
               <Grid.Col span={4}>
@@ -102,6 +109,7 @@ export default function RequestForExtensionOfProject() {
                   min={0}
                   value={inputs.currentDuration}
                   onChange={(value) => setInputs({ ...inputs, currentDuration: value })}
+                  style={{ padding: "10px" }}
                 />
               </Grid.Col>
               <Grid.Col span={4} mb={10}>
@@ -111,6 +119,7 @@ export default function RequestForExtensionOfProject() {
                   placeholder="Choose file"
                   accept="application/pdf"
                   onChange={(file) => setInputs({ ...inputs, extensionSanctioned: file })}
+                  style={{ padding: "10px" }}
                 />
               </Grid.Col>
               <Grid.Col span={4}>
@@ -120,16 +129,21 @@ export default function RequestForExtensionOfProject() {
                   minRows={3}
                   value={inputs.additionalDetails}
                   onChange={(e) => setInputs({ ...inputs, additionalDetails: e.target.value })}
+                  style={{ padding: "10px" }}
                 />
               </Grid.Col>
+              <Grid.Col span={12} style={{ display: "flex", justifyContent: "flex-end" }}>
+                <Button
+                  type="submit"
+                  mt="md"
+                  loading={isLoading}
+                  leftIcon={<FloppyDisk size={16} />}
+                  style={{ backgroundColor: "#2185d0", color: "#fff" }} // Custom button styling
+                >
+                  Save
+                </Button>
+              </Grid.Col>
             </Grid>
-            <Button
-              type="submit"
-              mt="md"
-              loading={isLoading}
-            >
-              Submit
-            </Button>
           </form>
         </Paper>
 

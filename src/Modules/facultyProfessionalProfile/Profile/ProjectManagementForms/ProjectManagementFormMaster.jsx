@@ -16,8 +16,8 @@ function ProjectManagementFormsMaster() {
   const tabItems = [
     { title: "New Project Registration Form", component: <NewProjectRegistrationForm /> },
     { title: "Request for Extension Of Project", component: <RequestForExtensionOfProject /> },
-    { title: "AoF Form", component: <AoFForm /> },
-    { title: "UCSE Form", component: <UCSEForm /> },
+    // { title: "AoF Form", component: <AoFForm /> },
+    // { title: "UCSE Form", component: <UCSEForm /> },
   ];
 
   // Handle tab change (previous/next)
@@ -65,6 +65,7 @@ function ProjectManagementFormsMaster() {
                 <Tabs.Tab
                   value={String(index)}
                   key={index}
+                  onClick={() => setActiveTab(String(index))}
                   className={
                     activeTab === String(index)
                       ? classes.fusionActiveRecentTab

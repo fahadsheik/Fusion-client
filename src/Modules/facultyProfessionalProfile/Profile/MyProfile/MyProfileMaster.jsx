@@ -132,6 +132,7 @@ function VisitsMaster() {
                 <Tabs.Tab
                   value={String(index)}
                   key={index}
+                  onClick={() => setActiveTab(String(index))}
                   className={
                     activeTab === String(index)
                       ? classes.fusionActiveRecentTab

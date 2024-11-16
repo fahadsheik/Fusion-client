@@ -134,7 +134,10 @@ export default function ProjectRegistrationForm() {
   return (
     <MantineProvider withGlobalStyles withNormalizeCSS>
       <Container size="2xl" mt="xl">
-        <Paper shadow="xs" p="md" withBorder style={{ borderLeft: "8px solid #2185d0" }}>
+        <Paper shadow="xs" p="md" withBorder style={{ borderLeft: "8px solid #2185d0", backgroundColor: "#f9fafb" }}>
+        <Title order={2} mb="sm" style={{ color: "#2185d0" }}>
+            Add a New Project
+          </Title>
           <form onSubmit={handleSubmit}>
             <Grid gutter="md">
               <Grid.Col span={3}>
@@ -144,6 +147,7 @@ export default function ProjectRegistrationForm() {
                   placeholder="Enter project title"
                   value={inputs.projectTitle}
                   onChange={(e) => setInputs({ ...inputs, projectTitle: e.target.value })}
+                  style={{ padding: "10px" }} // Consistent padding
                 />
               </Grid.Col>
               <Grid.Col span={3}>
@@ -152,6 +156,7 @@ export default function ProjectRegistrationForm() {
                   placeholder="Enter sponsoring agency or client"
                   value={inputs.sponsoringAgency}
                   onChange={(e) => setInputs({ ...inputs, sponsoringAgency: e.target.value })}
+                  style={{ padding: "10px" }} // Consistent padding
                 />
               </Grid.Col>
               <Grid.Col span={3}>
@@ -160,6 +165,7 @@ export default function ProjectRegistrationForm() {
                   placeholder="Select date"
                   value={inputs.projectStartDate}
                   onChange={(date) => setInputs({ ...inputs, projectStartDate: date })}
+                  style={{ padding: "10px" }} // Consistent padding
                 />
               </Grid.Col>
               <Grid.Col span={3}>
@@ -168,6 +174,7 @@ export default function ProjectRegistrationForm() {
                   placeholder="Select date"
                   value={inputs.fundReceivedDate}
                   onChange={(date) => setInputs({ ...inputs, fundReceivedDate: date })}
+                  style={{ padding: "10px" }} // Consistent padding
                 />
               </Grid.Col>
               <Grid.Col span={4}>
@@ -176,6 +183,7 @@ export default function ProjectRegistrationForm() {
                   placeholder="Number of weeks e.g. 42"
                   value={inputs.projectDuration}
                   onChange={(value) => setInputs({ ...inputs, projectDuration: value })}
+                  style={{ padding: "10px" }} // Consistent padding
                 />
               </Grid.Col>
               <Grid.Col span={4}>
@@ -188,6 +196,7 @@ export default function ProjectRegistrationForm() {
                   ]}
                   value={inputs.agreement}
                   onChange={(value) => setInputs({ ...inputs, agreement: value })}
+                  style={{ padding: "10px" }} // Consistent padding
                 />
               </Grid.Col>
               <Grid.Col span={4}>
@@ -196,6 +205,7 @@ export default function ProjectRegistrationForm() {
                   placeholder="Enter amount"
                   value={inputs.totalAmountSanctioned}
                   onChange={(value) => setInputs({ ...inputs, totalAmountSanctioned: value })}
+                  style={{ padding: "10px" }} // Consistent padding
                 />
               </Grid.Col>
               <Grid.Col span={4}>
@@ -208,6 +218,7 @@ export default function ProjectRegistrationForm() {
                   ]}
                   value={inputs.projectType}
                   onChange={(value) => setInputs({ ...inputs, projectType: value })}
+                  style={{ padding: "10px" }} // Consistent padding
                 />
               </Grid.Col>
               <Grid.Col span={4}>
@@ -216,6 +227,7 @@ export default function ProjectRegistrationForm() {
                   placeholder="Co PI name if any"
                   value={inputs.coPI}
                   onChange={(e) => setInputs({ ...inputs, coPI: e.target.value })}
+                  style={{ padding: "10px" }} // Consistent padding
                 />
               </Grid.Col>
               <Grid.Col span={4}>
@@ -228,6 +240,7 @@ export default function ProjectRegistrationForm() {
                   ]}
                   value={inputs.projectOperatedBy}
                   onChange={(value) => setInputs({ ...inputs, projectOperatedBy: value })}
+                  style={{ padding: "10px" }} // Consistent padding
                 />
               </Grid.Col>
               <Grid.Col span={12}>
@@ -237,6 +250,7 @@ export default function ProjectRegistrationForm() {
                   placeholder="Choose file"
                   accept="application/pdf"
                   onChange={(file) => setInputs({ ...inputs, attachments: file })}
+                  style={{ padding: "10px" }} // Consistent padding
                 />
               </Grid.Col>
               <Grid.Col span={12}>
@@ -246,17 +260,21 @@ export default function ProjectRegistrationForm() {
                   minRows={3}
                   value={inputs.detailsDescription}
                   onChange={(e) => setInputs({ ...inputs, detailsDescription: e.target.value })}
+                  style={{ padding: "10px" }} // Consistent padding
                 />
               </Grid.Col>
+              <Grid.Col span={12} style={{ display: "flex", justifyContent: "flex-end" }}>
+                <Button
+                  type="submit"
+                  mt="md"
+                  loading={isLoading}
+                  leftIcon={<FloppyDisk size={16} />}
+                  style={{ backgroundColor: "#2185d0", color: "#fff" }} // Custom button styling
+                >
+                  Save
+                </Button>
+              </Grid.Col>
             </Grid>
-            <Button
-              type="submit"
-              mt="md"
-              loading={isLoading}
-              leftIcon={<FloppyDisk size={16} />}
-            >
-              {isEdit ? "Update" : "Submit"}
-            </Button>
           </form>
         </Paper>
 

@@ -40,7 +40,7 @@ export default function ViewResearchProject() {
   const fetchProjects = async () => {
     try {
       const response = await axios.get(
-        "http://127.0.0.1:8000/FPF/projects/pf_no/",
+        "http://127.0.0.1:8000/eis/projects/pf_no/",
       );
       const projects = response.data;
       // Sort projects by submission date in descending order
@@ -58,156 +58,164 @@ export default function ViewResearchProject() {
     fetchProjects();
   }, []);
 
-  // return (
-  //   <div className="bg-white p-6 rounded-lg shadow-2xl w-full max-w-[4910px] border-l-8 border-customSaveButtonColor">
-  //     <h1 className="text-lg font-medium text-gray-800 mb-1">Research Projects</h1>
-  //     <hr />
-
-  //     <div className="overflow-x-auto">
-  //       <table className="min-w-full border border-gray-300">
-  //         <thead>
-  //           <tr>
-  //             <th className="border border-gray-300 p-2">Title</th>
-  //             <th className="border border-gray-300 p-2">PI</th>
-  //             <th className="border border-gray-300 p-2">Co-PI</th>
-  //             <th className="border border-gray-300 p-2">Funding Agency</th>
-  //             <th className="border border-gray-300 p-2">Status</th>
-  //             <th className="border border-gray-300 p-2">Submission Date</th>
-  //             <th className="border border-gray-300 p-2">Start Date</th>
-  //             <th className="border border-gray-300 p-2">Expected Finish Date</th>
-  //             <th className="border border-gray-300 p-2">Financial Outlay</th>
-  //           </tr>
-  //         </thead>
-  //         <tbody>
-  //           {tableData.map((project, index) => (
-  //             <tr key={index}>
-  //               <td className="border border-gray-300 p-2">{project.title}</td>
-  //               <td className="border border-gray-300 p-2">{project.pi}</td>
-  //               <td className="border border-gray-300 p-2">{project.co_pi}</td>
-  //               <td className="border border-gray-300 p-2">{project.funding_agency}</td>
-  //               <td className="border border-gray-300 p-2">{project.status}</td>
-  //               <td className="border border-gray-300 p-2">{new Date(project.submission_date).toLocaleDateString()}</td>
-  //               <td className="border border-gray-300 p-2">{new Date(project.start_date).toLocaleDateString()}</td>
-  //               <td className="border border-gray-300 p-2">{new Date(project.expected_finish_date).toLocaleDateString()}</td>
-  //               <td className="border border-gray-300 p-2">{project.financial_outlay}</td>
-  //             </tr>
-  //           ))}
-  //         </tbody>
-  //       </table>
-  //     </div>
-  //   </div>
-  // );
-  // return (
-  //   <MantineProvider withGlobalStyles withNormalizeCSS>
-  //     <Container size="xl">
-  //       <Paper
-  //         shadow="sm"
-  //         p="md"
-  //         withBorder
-  //         style={{ borderLeft: "8px solid #228be6" }}
-  //       >
-  //         <Title order={2} mb="sm">
-  //           Research Projects
-  //         </Title>
-  //         <ScrollArea>
-  //           <Table striped highlightOnHover style={{ minWidth: "100%" }}>
-  //             <thead>
-  //               <tr>
-  //                 <th>Title</th>
-  //                 <th>PI</th>
-  //                 <th>Co-PI</th>
-  //                 <th>Funding Agency</th>
-  //                 <th>Status</th>
-  //                 <th>Submission Date</th>
-  //                 <th>Start Date</th>
-  //                 <th>Expected Finish Date</th>
-  //                 <th>Financial Outlay</th>
-  //               </tr>
-  //             </thead>
-  //             <tbody>
-  //               {tableData.map((project, index) => (
-  //                 <tr key={index}>
-  //                   <td>{project.title}</td>
-  //                   <td>{project.pi}</td>
-  //                   <td>{project.co_pi}</td>
-  //                   <td>{project.funding_agency}</td>
-  //                   <td>{project.status}</td>
-  //                   <td>
-  //                     {new Date(project.submission_date).toLocaleDateString()}
-  //                   </td>
-  //                   <td>{new Date(project.start_date).toLocaleDateString()}</td>
-  //                   <td>
-  //                     {new Date(
-  //                       project.expected_finish_date,
-  //                     ).toLocaleDateString()}
-  //                   </td>
-  //                   <td>{project.financial_outlay}</td>
-  //                 </tr>
-  //               ))}
-  //             </tbody>
-  //           </Table>
-  //         </ScrollArea>
-  //       </Paper>
-  //     </Container>
-  //   </MantineProvider>
-  // );
+  
   return (
     <MantineProvider withGlobalStyles withNormalizeCSS>
-      <Container size="xl" mt="xl">
+      <Container size="2xl" mt="xl">
         <Paper
           shadow="sm"
-          p="md"
+          p="lg"
           withBorder
-          style={{ borderLeft: "8px solid #228be6" }}
+          style={{
+            borderLeft: "8px solid #228be6",
+            backgroundColor: "#f9fafb", // Light background for better contrast
+          }}
         >
           <Title
             order={2}
-            mb="md"
-            style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+            mb="lg"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              color: "#228be6", // Consistent color with border
+            }}
           >
             <MagnifyingGlass size={24} />
             Research Projects
           </Title>
-          <ScrollArea>
+          
+          {/* <ScrollArea>
             <Table striped highlightOnHover style={{ minWidth: "100%" }}>
               <thead>
                 <tr>
-                  <th>Title</th>
-                  <th>PI</th>
-                  <th>Co-PI</th>
-                  <th>Funding Agency</th>
-                  <th>Status</th>
-                  <th>Submission Date</th>
-                  <th>Start Date</th>
-                  <th>Expected Finish Date</th>
-                  <th>Financial Outlay</th>
+                  <th style={{ textAlign: "left", padding: "10px" }}>Title</th>
+                  <th style={{ textAlign: "left", padding: "10px" }}>PI</th>
+                  <th style={{ textAlign: "left", padding: "10px" }}>Co-PI</th>
+                  <th style={{ textAlign: "left", padding: "10px" }}>Funding Agency</th>
+                  <th style={{ textAlign: "left", padding: "10px" }}>Status</th>
+                  <th style={{ textAlign: "left", padding: "10px" }}>Submission Date</th>
+                  <th style={{ textAlign: "left", padding: "10px" }}>Start Date</th>
+                  <th style={{ textAlign: "left", padding: "10px" }}>Expected Finish Date</th>
+                  <th style={{ textAlign: "left", padding: "10px" }}>Financial Outlay</th>
                 </tr>
               </thead>
               <tbody>
-                {tableData.map((project, index) => (
-                  <tr key={index}>
-                    <td>{project.title}</td>
-                    <td>{project.pi}</td>
-                    <td>{project.co_pi}</td>
-                    <td>{project.funding_agency}</td>
-                    <td>{project.status}</td>
-                    <td>
-                      {new Date(project.submission_date).toLocaleDateString()}
+                {tableData.length > 0 ? (
+                  tableData.map((project, index) => (
+                    <tr key={index}>
+                      <td style={{ padding: "10px" }}>{project.title}</td>
+                      <td style={{ padding: "10px" }}>{project.pi}</td>
+                      <td style={{ padding: "10px" }}>{project.co_pi}</td>
+                      <td style={{ padding: "10px" }}>{project.funding_agency}</td>
+                      <td style={{ padding: "10px" }}>{project.status}</td>
+                      <td style={{ padding: "10px" }}>{project.date_submission}</td>
+                      <td style={{ padding: "10px" }}>{project.start_date}</td>
+                      <td style={{ padding: "10px" }}>{project.finish_date}</td>
+                      <td style={{ padding: "10px" }}>{project.financial_outlay}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={9} style={{ textAlign: "center", padding: "10px" }}>
+                      No research projects found.
                     </td>
-                    <td>{new Date(project.start_date).toLocaleDateString()}</td>
-                    <td>
-                      {new Date(
-                        project.expected_finish_date,
-                      ).toLocaleDateString()}
-                    </td>
-                    <td>{project.financial_outlay}</td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </Table>
-          </ScrollArea>
+          </ScrollArea> */}
+
+
+          {/* <ScrollArea style={{ padding: "20px", borderRadius: "8px", border: "1px solid #e0e0e0", boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)" }}>
+            <Table striped highlightOnHover style={{ minWidth: "100%", borderCollapse: "separate", borderSpacing: "0 8px" }}>
+              <thead>
+                <tr style={{ backgroundColor: "#f8f9fa" }}>
+                  {["Title", "PI", "Co-PI", "Funding Agency", "Status", "Submission Date", "Start Date", "Expected Finish Date", "Financial Outlay"].map((header, index) => (
+                    <th key={index} style={{ textAlign: "left", padding: "12px 16px", color: "#495057", fontWeight: "600", borderBottom: "2px solid #dee2e6" }}>
+                      {header}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {tableData.length > 0 ? (
+                  tableData.map((project, index) => (
+                    <tr key={index} style={{ backgroundColor: "#fff", boxShadow: "0 4px 8px rgba(0, 0, 0, 0.05)" }}>
+                      <td style={{ padding: "12px 16px" }}>{project.title}</td>
+                      <td style={{ padding: "12px 16px" }}>{project.pi}</td>
+                      <td style={{ padding: "12px 16px" }}>{project.co_pi}</td>
+                      <td style={{ padding: "12px 16px" }}>{project.funding_agency}</td>
+                      <td style={{ padding: "12px 16px" }}>{project.status}</td>
+                      <td style={{ padding: "12px 16px" }}>{project.date_submission}</td>
+                      <td style={{ padding: "12px 16px" }}>{project.start_date}</td>
+                      <td style={{ padding: "12px 16px" }}>{project.finish_date}</td>
+                      <td style={{ padding: "12px 16px", color: "#0d6efd", fontWeight: "500" }}>{project.financial_outlay}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={9} style={{ textAlign: "center", padding: "20px", color: "#6c757d" }}>
+                      No research projects found.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </Table>
+          </ScrollArea> */}
+
+
+<ScrollArea style={{ padding: "20px", borderRadius: "8px", border: "1px solid #e0e0e0", boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)" }}>
+      <Table striped highlightOnHover style={{ minWidth: "100%", borderCollapse: "collapse" }}>
+        <thead>
+          <tr style={{ backgroundColor: "#f8f9fa" }}>
+            {["Title", "PI", "Co-PI", "Funding Agency", "Status", "Submission Date", "Start Date", "Expected Finish Date", "Financial Outlay"].map((header, index) => (
+              <th
+                key={index}
+                style={{
+                  textAlign: "center",
+                  padding: "12px 16px",
+                  color: "#495057",
+                  fontWeight: "600",
+                  border: "1px solid #dee2e6",
+                  backgroundColor: "#f1f3f5",
+                }}
+              >
+                {header}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {tableData.length > 0 ? (
+            tableData.map((project, index) => (
+              <tr key={index} style={{ backgroundColor: "#fff" }}>
+                <td style={{ padding: "12px 16px", textAlign: "center", border: "1px solid #dee2e6" }}>{project.title}</td>
+                <td style={{ padding: "12px 16px", textAlign: "center", border: "1px solid #dee2e6" }}>{project.pi}</td>
+                <td style={{ padding: "12px 16px", textAlign: "center", border: "1px solid #dee2e6" }}>{project.co_pi}</td>
+                <td style={{ padding: "12px 16px", textAlign: "center", border: "1px solid #dee2e6" }}>{project.funding_agency}</td>
+                <td style={{ padding: "12px 16px", textAlign: "center", border: "1px solid #dee2e6" }}>{project.status}</td>
+                <td style={{ padding: "12px 16px", textAlign: "center", border: "1px solid #dee2e6" }}>{project.date_submission}</td>
+                <td style={{ padding: "12px 16px", textAlign: "center", border: "1px solid #dee2e6" }}>{project.start_date}</td>
+                <td style={{ padding: "12px 16px", textAlign: "center", border: "1px solid #dee2e6" }}>{project.finish_date}</td>
+                <td style={{ padding: "12px 16px", textAlign: "center", color: "#0d6efd", fontWeight: "500", border: "1px solid #dee2e6" }}>
+                  {project.financial_outlay}
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={9} style={{ textAlign: "center", padding: "20px", color: "#6c757d", border: "1px solid #dee2e6" }}>
+                No research projects found.
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </Table>
+    </ScrollArea>
         </Paper>
       </Container>
     </MantineProvider>
   );
+  
 }

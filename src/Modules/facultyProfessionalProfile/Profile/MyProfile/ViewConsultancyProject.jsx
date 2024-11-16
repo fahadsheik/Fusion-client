@@ -19,7 +19,7 @@ export default function ViewConsultancyProject() {
   const fetchProjects = async () => {
     try {
       const response = await axios.get(
-        "http://127.0.0.1:8000/FPF/consultancy_projects/pf_no/",
+        "http://127.0.0.1:8000/eis/consultancy_projects/pf_no/",
       );
       const projects = response.data;
       // Sort projects by submission date in descending order
@@ -37,283 +37,118 @@ export default function ViewConsultancyProject() {
     fetchProjects();
   }, []);
 
-  // return (
-  //   <div className="bg-white p-6 rounded-lg shadow-2xl w-full max-w-[4910px] border-l-8 border-customSaveButtonColor">
-  //     <h1 className="text-lg font-medium text-gray-800 mb-1">Consultancy Projects</h1>
-  //     <hr />
-
-  //     {/* Display error message if exists */}
-  //     {error && <p className="text-red-500">{error}</p>}
-
-  //     <div className="overflow-x-auto">
-  //       <table className="min-w-full border border-gray-300">
-  //         <thead>
-  //           <tr>
-  //             <th className="border border-gray-300 p-2">Title</th>
-  //             <th className="border border-gray-300 p-2">Consultant</th>
-  //             <th className="border border-gray-300 p-2">Client</th>
-  //             <th className="border border-gray-300 p-2">Start Date</th>
-  //             <th className="border border-gray-300 p-2">End Date</th>
-  //             <th className="border border-gray-300 p-2">Financial Outlay</th>
-  //           </tr>
-  //         </thead>
-  //         <tbody>
-  //           {tableData.length > 0 ? (
-  //             tableData.map((project) => (
-  //               <tr key={project.id}>
-  //                 <td className="border border-gray-300 p-2">{project.title}</td>
-  //                 <td className="border border-gray-300 p-2">{project.consultants}</td>
-  //                 <td className="border border-gray-300 p-2">{project.client}</td>
-  //                 <td className="border border-gray-300 p-2">{new Date(project.start_date).toLocaleDateString()}</td>
-  //                 <td className="border border-gray-300 p-2">{new Date(project.end_date).toLocaleDateString()}</td>
-  //                 <td className="border border-gray-300 p-2">{project.financial_outlay}</td>
-  //               </tr>
-  //             ))
-  //           ) : (
-  //             <tr>
-  //               <td colSpan="7" className="border border-gray-300 p-2 text-center">No projects found.</td>
-  //             </tr>
-  //           )}
-  //         </tbody>
-  //       </table>
-  //     </div>
-  //   </div>
-  // );
-  // return (
-  //   <MantineProvider withGlobalStyles withNormalizeCSS>
-  //     <Container size="xl" p={0}>
-  //       <Paper shadow="sm" p="md" withBorder style={{ borderLeft: '8px solid #228be6', maxWidth: '4910px', width: '100%' }}>
-  //         <Title order={2} mb="sm" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-  //           <Briefcase size={24} />
-  //           Consultancy Projects
-  //         </Title>
-  //         {error && <Text color="red" mb="sm">{error}</Text>}
-  //         <ScrollArea>
-  //           <Table striped highlightOnHover style={{ minWidth: '100%' }}>
-  //             <thead>
-  //               <tr>
-  //                 <th>Title</th>
-  //                 <th>Consultant</th>
-  //                 <th>Client</th>
-  //                 <th>Start Date</th>
-  //                 <th>End Date</th>
-  //                 <th>Financial Outlay</th>
-  //               </tr>
-  //             </thead>
-  //             <tbody>
-  //               {tableData.length > 0 ? (
-  //                 tableData.map((project) => (
-  //                   <tr key={project.id}>
-  //                     <td>{project.title}</td>
-  //                     <td>{project.consultants}</td>
-  //                     <td>{project.client}</td>
-  //                     <td>{new Date(project.start_date).toLocaleDateString()}</td>
-  //                     <td>{new Date(project.end_date).toLocaleDateString()}</td>
-  //                     <td>{project.financial_outlay}</td>
-  //                   </tr>
-  //                 ))
-  //               ) : (
-  //                 <tr>
-  //                   <td colSpan={6} style={{ textAlign: 'center' }}>No projects found.</td>
-  //                 </tr>
-  //               )}
-  //             </tbody>
-  //           </Table>
-  //         </ScrollArea>
-  //       </Paper>
-  //     </Container>
-  //   </MantineProvider>
-  // );
-  // return (
-  //   <MantineProvider withGlobalStyles withNormalizeCSS>
-  //     <Container size="xl" p={0}>
-  //       <Paper
-  //         shadow="sm"
-  //         p="md"
-  //         withBorder
-  //         style={{
-  //           borderLeft: "8px solid #228be6",
-  //           maxWidth: "4910px",
-  //           width: "100%",
-  //         }}
-  //       >
-  //         <Title
-  //           order={2}
-  //           mb="sm"
-  //           style={{ display: "flex", alignItems: "center", gap: "10px" }}
-  //         >
-  //           <Briefcase size={24} />
-  //           Consultancy Projects
-  //         </Title>
-  //         {error && (
-  //           <Text color="red" mb="sm">
-  //             {error}
-  //           </Text>
-  //         )}
-  //         <ScrollArea>
-  //           <Table striped highlightOnHover style={{ minWidth: "100%" }}>
-  //             <thead>
-  //               <tr>
-  //                 <th>Title</th>
-  //                 <th>Consultant</th>
-  //                 <th>Client</th>
-  //                 <th>Start Date</th>
-  //                 <th>End Date</th>
-  //                 <th>Financial Outlay</th>
-  //               </tr>
-  //             </thead>
-  //             <tbody>
-  //               {tableData.length > 0 ? (
-  //                 tableData.map((project) => (
-  //                   <tr key={project.id}>
-  //                     <td>{project.title}</td>
-  //                     <td>{project.consultants}</td>
-  //                     <td>{project.client}</td>
-  //                     <td>
-  //                       {new Date(project.start_date).toLocaleDateString()}
-  //                     </td>
-  //                     <td>{new Date(project.end_date).toLocaleDateString()}</td>
-  //                     <td>{project.financial_outlay}</td>
-  //                   </tr>
-  //                 ))
-  //               ) : (
-  //                 <tr>
-  //                   <td colSpan={6} style={{ textAlign: "center" }}>
-  //                     No projects found.
-  //                   </td>
-  //                 </tr>
-  //               )}
-  //             </tbody>
-  //           </Table>
-  //         </ScrollArea>
-  //       </Paper>
-  //     </Container>
-  //   </MantineProvider>
-  // );
-  // return (
-  //   <MantineProvider withGlobalStyles withNormalizeCSS>
-  //     <Container size="xl" p={0}>
-  //       <Paper
-  //         shadow="sm"
-  //         p="md"
-  //         withBorder
-  //         style={{
-  //           borderLeft: "8px solid #228be6",
-  //           maxWidth: "4910px",
-  //           width: "100%",
-  //         }}
-  //       >
-  //         <Title
-  //           order={2}
-  //           mb="sm"
-  //           style={{ display: "flex", alignItems: "center", gap: "10px" }}
-  //         >
-  //           <Briefcase size={24} />
-  //           Consultancy Projects
-  //         </Title>
-  //         {error && (
-  //           <Text color="red" mb="sm">
-  //             {error}
-  //           </Text>
-  //         )}
-  //         <ScrollArea>
-  //           <Table striped highlightOnHover style={{ minWidth: "100%" }}>
-  //             <thead>
-  //               <tr>
-  //                 <th>Title</th>
-  //                 <th>Consultant</th>
-  //                 <th>Client</th>
-  //                 <th>Start Date</th>
-  //                 <th>End Date</th>
-  //                 <th>Financial Outlay</th>
-  //               </tr>
-  //             </thead>
-  //             <tbody>
-  //               {tableData.length > 0 ? (
-  //                 tableData.map((project) => (
-  //                   <tr key={project.id}>
-  //                     <td>{project.title}</td>
-  //                     <td>{project.consultants}</td>
-  //                     <td>{project.client}</td>
-  //                     <td>{new Date(project.start_date).toLocaleDateString()}</td>
-  //                     <td>{new Date(project.end_date).toLocaleDateString()}</td>
-  //                     <td>{project.financial_outlay}</td>
-  //                   </tr>
-  //                 ))
-  //               ) : (
-  //                 <tr>
-  //                   <td colSpan={6} style={{ textAlign: "center" }}>
-  //                     No projects found.
-  //                   </td>
-  //                 </tr>
-  //               )}
-  //             </tbody>
-  //           </Table>
-  //         </ScrollArea>
-  //       </Paper>
-  //     </Container>
-  //   </MantineProvider>
-  // );
+  
   return (
     <MantineProvider withGlobalStyles withNormalizeCSS>
-      <Container size="xl" mt="xl">
+      <Container size="2xl" mt="xl">
         <Paper
           shadow="sm"
-          p="md"
+          p="lg"
           withBorder
-          style={{ borderLeft: "8px solid #228be6" }}
+          style={{
+            borderLeft: "8px solid #228be6",
+            backgroundColor: "#f9fafb",
+          }}
         >
           <Title
             order={2}
-            mb="md"
-            style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+            mb="lg"
+            style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "#228be6" }}
           >
             <Briefcase size={24} />
             Consultancy Projects
           </Title>
+          
           {error && (
-            <Text color="red" mb="sm">
+            <Text color="red" mb="sm" style={{ textAlign: "center" }}>
               {error}
             </Text>
           )}
-          <ScrollArea>
-            <Table striped highlightOnHover style={{ minWidth: "100%" }}>
+          
+          {/* <ScrollArea>
+            <Table striped highlightOnHover withBorder style={{ minWidth: "100%" }}>
               <thead>
                 <tr>
-                  <th>Title</th>
-                  <th>Consultant</th>
-                  <th>Client</th>
-                  <th>Start Date</th>
-                  <th>End Date</th>
-                  <th>Financial Outlay</th>
+                  <th style={{ textAlign: "left", padding: "8px" }}>Title</th>
+                  <th style={{ textAlign: "left", padding: "8px" }}>Consultant</th>
+                  <th style={{ textAlign: "left", padding: "8px" }}>Client</th>
+                  <th style={{ textAlign: "left", padding: "8px" }}>Start Date</th>
+                  <th style={{ textAlign: "left", padding: "8px" }}>End Date</th>
+                  <th style={{ textAlign: "left", padding: "8px" }}>Financial Outlay</th>
                 </tr>
               </thead>
               <tbody>
                 {tableData.length > 0 ? (
                   tableData.map((project) => (
                     <tr key={project.id}>
-                      <td>{project.title}</td>
-                      <td>{project.consultants}</td>
-                      <td>{project.client}</td>
-                      <td>
-                        {new Date(project.start_date).toLocaleDateString()}
-                      </td>
-                      <td>{new Date(project.end_date).toLocaleDateString()}</td>
-                      <td>{project.financial_outlay}</td>
+                      <td style={{ padding: "8px" }}>{project.title}</td>
+                      <td style={{ padding: "8px" }}>{project.consultants}</td>
+                      <td style={{ padding: "8px" }}>{project.client}</td>
+                      <td style={{ padding: "8px" }}>{project.start_date}</td>
+                      <td style={{ padding: "8px" }}>{project.end_date}</td>
+                      <td style={{ padding: "8px" }}>{project.financial_outlay}</td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={6} style={{ textAlign: "center" }}>
+                    <td colSpan={6} style={{ textAlign: "center", padding: "8px" }}>
                       No projects found.
                     </td>
                   </tr>
                 )}
               </tbody>
             </Table>
-          </ScrollArea>
+          </ScrollArea> */}
+
+
+<ScrollArea style={{ padding: "20px", borderRadius: "8px", border: "1px solid #e0e0e0", boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)" }}>
+      <Table striped highlightOnHover withBorder style={{ minWidth: "100%", borderCollapse: "collapse" }}>
+        <thead>
+          <tr style={{ backgroundColor: "#f8f9fa" }}>
+            {["Title", "Consultant", "Client", "Start Date", "End Date", "Financial Outlay"].map((header, index) => (
+              <th
+                key={index}
+                style={{
+                  textAlign: "center",
+                  padding: "12px",
+                  color: "#495057",
+                  fontWeight: "600",
+                  border: "1px solid #dee2e6",
+                  backgroundColor: "#f1f3f5",
+                }}
+              >
+                {header}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {tableData.length > 0 ? (
+            tableData.map((project) => (
+              <tr key={project.id} style={{ backgroundColor: "#fff" }}>
+                <td style={{ padding: "12px", textAlign: "center", border: "1px solid #dee2e6" }}>{project.title}</td>
+                <td style={{ padding: "12px", textAlign: "center", border: "1px solid #dee2e6" }}>{project.consultants}</td>
+                <td style={{ padding: "12px", textAlign: "center", border: "1px solid #dee2e6" }}>{project.client}</td>
+                <td style={{ padding: "12px", textAlign: "center", border: "1px solid #dee2e6" }}>{project.start_date}</td>
+                <td style={{ padding: "12px", textAlign: "center", border: "1px solid #dee2e6" }}>{project.end_date}</td>
+                <td style={{ padding: "12px", textAlign: "center", color: "#0d6efd", fontWeight: "500", border: "1px solid #dee2e6" }}>
+                  {project.financial_outlay}
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={6} style={{ textAlign: "center", padding: "20px", color: "#6c757d", border: "1px solid #dee2e6" }}>
+                No projects found.
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </Table>
+    </ScrollArea>
         </Paper>
       </Container>
     </MantineProvider>
   );
+  
 }

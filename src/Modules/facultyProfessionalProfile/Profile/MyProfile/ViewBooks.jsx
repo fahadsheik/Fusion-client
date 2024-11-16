@@ -135,52 +135,56 @@ export default function ViewBooks() {
   // );
   return (
     <MantineProvider withGlobalStyles withNormalizeCSS>
-      <Container size="xl" mt="xl">
+      <Container size="2xl" mt="xl">
         <Paper
           shadow="sm"
-          p="md"
+          p="lg"
           withBorder
-          style={{ borderLeft: "8px solid #228be6" }}
+          style={{
+            borderLeft: "8px solid #228be6",
+            backgroundColor: "#f9fafb",
+          }}
         >
           <Title
             order={2}
-            mb="md"
-            style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+            mb="lg"
+            style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "#228be6" }}
           >
             <Books size={24} />
             Books
           </Title>
+          
           {error && (
-            <Text color="red" mb="sm">
+            <Text color="red" mb="sm" style={{ textAlign: "center" }}>
               {error}
             </Text>
           )}
+          
           <ScrollArea>
-            <Table striped highlightOnHover style={{ minWidth: "100%" }}>
+            <Table striped highlightOnHover withBorder style={{ minWidth: "100%" }}>
               <thead>
                 <tr>
-                  <th>Publish Type</th>
-                  <th>Author</th>
-                  <th>Publisher</th>
-                  <th>Publishing Year</th>
-                  <th>Title</th>
-                  {/* <th>Journal File</th> */}
+                  <th style={{ textAlign: "left", padding: "8px" }}>Publish Type</th>
+                  <th style={{ textAlign: "left", padding: "8px" }}>Author</th>
+                  <th style={{ textAlign: "left", padding: "8px" }}>Publisher</th>
+                  <th style={{ textAlign: "left", padding: "8px" }}>Publishing Year</th>
+                  <th style={{ textAlign: "left", padding: "8px" }}>Title</th>
                 </tr>
               </thead>
               <tbody>
                 {tableData.length > 0 ? (
                   tableData.map((project) => (
                     <tr key={project.id}>
-                      <td>{project.title}</td>
-                      <td>{project.rollno}</td>
-                      <td>{project.s_name}</td>
-                      <td>{project.s_year}</td>
-                      <td>{project.a_month}</td>
+                      <td style={{ padding: "8px" }}>{project.title}</td>
+                      <td style={{ padding: "8px" }}>{project.rollno}</td>
+                      <td style={{ padding: "8px" }}>{project.s_name}</td>
+                      <td style={{ padding: "8px" }}>{project.s_year}</td>
+                      <td style={{ padding: "8px" }}>{project.a_month}</td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={5} style={{ textAlign: "center" }}>
+                    <td colSpan={5} style={{ textAlign: "center", padding: "8px" }}>
                       No theses found.
                     </td>
                   </tr>
@@ -192,4 +196,5 @@ export default function ViewBooks() {
       </Container>
     </MantineProvider>
   );
+  
 }

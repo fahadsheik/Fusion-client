@@ -1,5 +1,250 @@
-import { useState } from "react";
-// import { Save } from "lucide-react";
+// import { useState, useEffect } from "react";
+// import axios from "axios";
+// import {
+//   MantineProvider,
+//   Container,
+//   Paper,
+//   Title,
+//   Grid,
+//   TextInput,
+//   Select,
+//   Button,
+//   Table,
+// } from "@mantine/core";
+// import { FloppyDisk, Trash, Pencil } from "@phosphor-icons/react";
+
+// export default function Books() {
+//   const [inputs, setInputs] = useState({
+//     publishType: "",
+//     author: "",
+//     publisher: "",
+//     year: "",
+//     title: "",
+//   });
+//   const [achievements, setAchievements] = useState([]);
+//   const [isLoading, setIsLoading] = useState(false);
+//   const [editingId, setEditingId] = useState(null); // For editing
+
+//   // Fetch achievements on component mount
+//   useEffect(() => {
+//     const fetchAchievements = async () => {
+//       try {
+//         const res = await axios.get("http://127.0.0.1:8000/eis/fetch_book");
+//         setAchievements(res.data);
+//       } catch (error) {
+//         console.error(error);
+//       }
+//     };
+//     fetchAchievements();
+//   }, []);
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     try {
+//       setIsLoading(true);
+//       if (editingId) {
+//         // Update the book
+//         const formData = new FormData();
+//         formData.append("user_id", 5318); // Adjust this as needed
+//         formData.append("book_p_type", inputs.publishType);
+//         formData.append("book_author", inputs.author);
+//         formData.append("book_publisher", inputs.publisher);
+//         formData.append("book_year", inputs.year);
+//         formData.append("book_title", inputs.title);
+//         formData.append("bookspk", editingId);
+//         await axios.put("http://127.0.0.1:8000/eis/books/edit", formData);
+//       } else {
+//         // Create a new book
+//         const formData = new FormData();
+//         formData.append("user_id", 5318); // Adjust this as needed
+//         formData.append("book_p_type", inputs.publishType);
+//         formData.append("book_author", inputs.author);
+//         formData.append("book_publisher", inputs.publisher);
+//         formData.append("book_year", inputs.year);
+//         formData.append("book_title", inputs.title);
+//         await axios.post("http://127.0.0.1:8000/eis/book/", formData);
+//       }
+//       setInputs({
+//         publishType: "",
+//         author: "",
+//         publisher: "",
+//         year: "",
+//         title: "",
+//       });
+//       setEditingId(null); // Reset editing ID
+//       // Refresh the list of achievements
+//       const res = await axios.get("http://127.0.0.1:8000/eis/fetch_book");
+//       setAchievements(res.data);
+//     } catch (error) {
+//       console.error(error);
+//     } finally {
+//       setIsLoading(false);
+//     }
+//   };
+
+//   const handleEdit = (achievement) => {
+//     setInputs({
+//       publishType: achievement.publishType,
+//       author: achievement.author,
+//       publisher: achievement.publisher,
+//       year: achievement.year,
+//       title: achievement.title,
+//     });
+//     setEditingId(achievement.id); // Store the ID of the book being edited
+//   };
+
+//   const years = Array.from({ length: 31 }, (_, i) => (2000 + i).toString());
+
+//   return (
+//     <MantineProvider withGlobalStyles withNormalizeCSS>
+//       <Container size="2xl" mt="xl">
+//         <Paper
+//           shadow="xs"
+//           p="md"
+//           withBorder
+//           style={{ borderLeft: "8px solid #2185d0" }}
+//         >
+//           <Title order={2} mb="sm">
+//             {editingId ? "Edit Book/Book Chapter" : "Add a Book/Book Chapter"}
+//           </Title>
+//           <form onSubmit={handleSubmit}>
+//             <Grid>
+//               <Grid.Col span={6}>
+//                 <Select
+//                   label="Publish Type"
+//                   placeholder="Select Type"
+//                   data={[
+//                     { value: "book", label: "Book" },
+//                     { value: "monograph", label: "Monograph" },
+//                     { value: "book-chapter", label: "Book Chapter" },
+//                     { value: "handbook", label: "Handbook" },
+//                     { value: "technical-report", label: "Technical Report" },
+//                   ]}
+//                   value={inputs.publishType}
+//                   onChange={(e) =>
+//                     setInputs({ ...inputs, publishType: e.target.value || "" })
+//                   }
+//                   required
+//                 />
+//               </Grid.Col>
+//               <Grid.Col span={6}>
+//                 <TextInput
+//                   label="Author"
+//                   placeholder="Author"
+//                   value={inputs.author}
+//                   onChange={(e) =>
+//                     setInputs({ ...inputs, author: e.target.value })
+//                   }
+//                   required
+//                 />
+//               </Grid.Col>
+//               <Grid.Col span={6}>
+//                 <TextInput
+//                   label="Publisher"
+//                   placeholder="Publisher"
+//                   value={inputs.publisher}
+//                   onChange={(e) =>
+//                     setInputs({ ...inputs, publisher: e.target.value })
+//                   }
+//                   required
+//                 />
+//               </Grid.Col>
+//               <Grid.Col span={6}>
+//                 <Select
+//                   label="Publishing Year"
+//                   placeholder="Select Year"
+//                   data={years}
+//                   value={inputs.year}
+//                   onChange={(e) =>
+//                     setInputs({ ...inputs, year: e.target.value || "" })
+//                   }
+//                   required
+//                 />
+//               </Grid.Col>
+//               <Grid.Col span={12}>
+//                 <TextInput
+//                   label="Title"
+//                   placeholder="Title"
+//                   value={inputs.title}
+//                   onChange={(e) =>
+//                     setInputs({ ...inputs, title: e.target.value })
+//                   }
+//                   required
+//                 />
+//               </Grid.Col>
+//               <Grid.Col
+//                 span={12}
+//                 style={{ display: "flex", justifyContent: "flex-end" }}
+//               >
+//                 <Button
+//                   type="submit"
+//                   loading={isLoading}
+//                   leftIcon={<FloppyDisk size={16} />}
+//                 >
+//                   Save
+//                 </Button>
+//               </Grid.Col>
+//             </Grid>
+//           </form>
+//         </Paper>
+
+//         <Paper mt="xl" p="md" withBorder>
+//           <Title order={3} mb="sm">
+//             Report:
+//           </Title>
+//           {achievements.length === 0 ? (
+//             <p>No Books Recorded Yet</p>
+//           ) : (
+//             <Table>
+//               <thead>
+//                 <tr>
+//                   <th>Sr</th>
+//                   <th>Title of Book</th>
+//                   <th>Authors</th>
+//                   <th>Publish Type</th>
+//                   <th>Year</th>
+//                   <th>Publisher</th>
+//                   <th>Action</th>
+//                 </tr>
+//               </thead>
+//               <tbody>
+//                 {achievements.map((achievement, index) => (
+//                   <tr key={achievement.id}>
+//                     <td>{index + 1}</td>
+//                     <td>{achievement.title}</td>
+//                     <td>{achievement.author}</td>
+//                     <td>{achievement.publishType}</td>
+//                     <td>{achievement.year}</td>
+//                     <td>{achievement.publisher}</td>
+//                     <td>
+//                       <Button
+//                         variant="subtle"
+//                         color="blue"
+//                         leftIcon={<Pencil size={16} />}
+//                         onClick={() => handleEdit(achievement)}
+//                       >
+//                         Edit
+//                       </Button>
+//                       <Button
+//                         variant="subtle"
+//                         color="red"
+//                         leftIcon={<Trash size={16} />}
+//                       >
+//                         Delete
+//                       </Button>
+//                     </td>
+//                   </tr>
+//                 ))}
+//               </tbody>
+//             </Table>
+//           )}
+//         </Paper>
+//       </Container>
+//     </MantineProvider>
+//   );
+// }
+
+import { useState, useEffect } from "react";
 import axios from "axios";
 import {
   MantineProvider,
@@ -12,7 +257,7 @@ import {
   Button,
   Table,
 } from "@mantine/core";
-import { FloppyDisk, Trash } from "@phosphor-icons/react";
+import { FloppyDisk, Trash, Pencil } from "@phosphor-icons/react";
 
 export default function Books() {
   const [inputs, setInputs] = useState({
@@ -24,23 +269,52 @@ export default function Books() {
   });
   const [achievements, setAchievements] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [editingId, setEditingId] = useState(null); // For editing
 
   const fetchAchievements = async () => {
     try {
-      const res = await axios.get("/achievements");
+      const res = await axios.get("http://127.0.0.1:8000/eis/fetch_book");
       setAchievements(res.data);
     } catch (error) {
       console.error(error);
     }
   };
+  
+  // Fetch achievements on component mount
+  useEffect(() => {
+    fetchAchievements();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       setIsLoading(true);
-      const res = await axios.post("/achievement_insert", inputs);
-      console.log(res.data);
-      fetchAchievements(); // Refresh the list of achievements
+      const formData = new FormData();
+      formData.append("user_id", 5318); // Adjust this as needed
+      formData.append("book_p_type", inputs.publishType);
+      formData.append("book_author", inputs.author);
+      formData.append("book_publisher", inputs.publisher);
+      formData.append("book_year", inputs.year);
+      formData.append("book_title", inputs.title);
+      if (editingId) {
+        // Update the book
+        formData.append("bookspk", editingId);
+        await axios.post("http://127.0.0.1:8000/eis/books/edit", formData);
+      } else {
+        // Create a new book
+        await axios.post("http://127.0.0.1:8000/eis/book/", formData);
+      }
+      setInputs({
+        publishType: "",
+        author: "",
+        publisher: "",
+        year: "",
+        title: "",
+      });
+      setEditingId(null); // Reset editing ID
+      // Refresh the list of achievements
+      const res = await axios.get("http://127.0.0.1:8000/eis/fetch_book");
+      setAchievements(res.data);
     } catch (error) {
       console.error(error);
     } finally {
@@ -48,181 +322,32 @@ export default function Books() {
     }
   };
 
-  // Use useEffect to fetch the achievements not the handleClick event
+  const handleEdit = (achievement) => {
+    setInputs({
+      publishType: achievement.p_type,
+      author: achievement.authors,
+      publisher: achievement.publisher,
+      year: achievement.pyear,
+      title: achievement.title,
+    });
+    setEditingId(achievement.id); // Store the ID of the book being edited
+  };
+
+  const handleDelete = async (achievement) => {
+    if (window.confirm("Are you sure you want to delete this Book?")) {
+      try {
+        await axios.post(
+          "http://127.0.0.1:8000/eis/emp_published_booksDelete/",
+          new URLSearchParams({ pk: achievement.id }),
+        ); // Adjust the delete URL as needed
+        fetchAchievements(); // Refresh the project list after deletion
+      } catch (error) {
+        console.error("Error deleting book:", error);
+      }
+    }
+  }
 
   const years = Array.from({ length: 31 }, (_, i) => (2000 + i).toString());
-
-  // return (
-  //   <div className="bg-white p-6 rounded-lg shadow-2xl w-full max-w-[4910px] border-l-8 border-customSaveButtonColor">
-  //     <h1 className="text-lg font-medium text-gray-800 mb-1">
-  //       Add a Book/Book Chapter
-  //     </h1>
-  //     <hr />
-  //     <form className="space-y-6 my-5" onSubmit={handleSubmit}>
-  //       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-  //         <div>
-  //           <label
-  //             htmlFor="publish-type"
-  //             className="block text-sm font-medium text-gray-700"
-  //           >
-  //             Publish Type
-  //           </label>
-  //           <select
-  //             id="publish-type"
-  //             required
-  //             className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm"
-  //             value={inputs.publishType}
-  //             onChange={(e) =>
-  //               setInputs({ ...inputs, publishType: e.target.value })
-  //             }
-  //           >
-  //             <option value="" disabled>
-  //               Select Type
-  //             </option>
-  //             <option value="book">Book</option>
-  //             <option value="monograph">Monograph</option>
-  //             <option value="book-chapter">Book Chapter</option>
-  //             <option value="handbook">Handbook</option>
-  //             <option value="technical-report">Technical Report</option>
-  //           </select>
-  //         </div>
-  //         <div>
-  //           <label
-  //             htmlFor="author"
-  //             className="block text-sm font-medium text-gray-700"
-  //           >
-  //             Author
-  //           </label>
-  //           <input
-  //             type="text"
-  //             id="author"
-  //             required
-  //             className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm"
-  //             value={inputs.author}
-  //             onChange={(e) => setInputs({ ...inputs, author: e.target.value })}
-  //           />
-  //         </div>
-  //       </div>
-
-  //       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-  //         <div>
-  //           <label
-  //             htmlFor="publisher"
-  //             className="block text-sm font-medium text-gray-700"
-  //           >
-  //             Publisher
-  //           </label>
-  //           <input
-  //             type="text"
-  //             required
-  //             id="publisher"
-  //             placeholder="Publisher"
-  //             className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm"
-  //             value={inputs.publisher}
-  //             onChange={(e) =>
-  //               setInputs({ ...inputs, publisher: e.target.value })
-  //             }
-  //           />
-  //         </div>
-  //         <div className="mt-5">
-  //           <select
-  //             id="year"
-  //             value={inputs.year}
-  //             onChange={(e) => setInputs({ ...inputs, year: e.target.value })}
-  //             className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-  //           >
-  //           <option value="" disabled>Publishing Year</option>
-  //           {years.map((year) => (
-  //               <option key={year} value={year}>
-  //                 {year}
-  //               </option>
-  //             ))}
-  //           </select>
-  //         </div>
-  //       </div>
-
-  //       <div>
-  //         <label
-  //           htmlFor="title"
-  //           className="block text-sm font-medium text-gray-700"
-  //         >
-  //           Title
-  //         </label>
-  //         <input
-  //           type="text"
-  //           required
-  //           id="title"
-  //           placeholder="Title"
-  //           value={inputs.title}
-  //           onChange={(e) => setInputs({ ...inputs, title: e.target.value })}
-  //           className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-light-blue-400"
-  //         />
-  //       </div>
-
-  //       <div className="flex justify-end">
-  //         <button
-  //           type="submit"
-  //           className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-customSaveButtonColor hover:bg-customSaveButtonColor focus:outline-none"
-  //           disabled={isLoading}
-  //         >
-  //           <Save className="w-5 h-5 mr-2" />
-  //           {isLoading ? "Loading..." : "Save"}
-  //         </button>
-  //       </div>
-  //     </form>
-
-  //     <h1 className="font-medium text-gray-800 mb-1 mt-6">Report:</h1>
-  //     <hr className="mb-4" />
-
-  //     <div className="overflow-x-auto max-h-[400px]">
-  //       {achievements.length === 0 ? (
-  //         <p className="text-gray-500">No Books Recorded Yet</p>
-  //       ) : (
-  //         <table className="min-w-full table-auto border-collapse border border-gray-200 text-left">
-  //           <thead className="sticky top-0 bg-gray-400">
-  //             <tr className="font-semibold text-gray-800">
-  //               <th className="border border-gray-300 px-4 py-2">Sr</th>
-  //               <th className="border border-gray-300 px-4 py-2">
-  //                 Achievement Type
-  //               </th>
-  //               <th className="border border-gray-300 px-4 py-2">Title</th>
-  //               <th className="border border-gray-300 px-4 py-2">Date</th>
-  //               <th className="border border-gray-300 px-4 py-2">Action</th>
-  //             </tr>
-  //           </thead>
-  //           <tbody>
-  //             {achievements.map((achievement, index) => (
-  //               <tr
-  //                 key={index}
-  //                 className={`${
-  //                   index % 2 === 0 ? "bg-gray-100" : "bg-white"
-  //                 } hover:bg-gray-200`}
-  //               >
-  //                 <td className="border border-gray-300 px-4 py-2">
-  //                   {index + 1}
-  //                 </td>
-  //                 <td className="border border-gray-300 px-4 py-2">
-  //                   {achievement.achievementType}
-  //                 </td>
-  //                 <td className="border border-gray-300 px-4 py-2">
-  //                   {achievement.title}
-  //                 </td>
-  //                 <td className="border border-gray-300 px-4 py-2">
-  //                   {achievement.day}/{achievement.month}/{achievement.year}
-  //                 </td>
-  //                 <td className="border border-gray-300 px-4 py-2 text-left">
-  //                   <button className="text-red-600 hover:text-red-900">
-  //                     Delete
-  //                   </button>
-  //                 </td>
-  //               </tr>
-  //             ))}
-  //           </tbody>
-  //         </table>
-  //       )}
-  //     </div>
-  //   </div>
-  // );
 
   return (
     <MantineProvider withGlobalStyles withNormalizeCSS>
@@ -231,13 +356,13 @@ export default function Books() {
           shadow="xs"
           p="md"
           withBorder
-          style={{ borderLeft: "8px solid #2185d0" }}
+          style={{ borderLeft: "8px solid #2185d0", backgroundColor: "#f9fafb" }} // Light background for contrast
         >
-          <Title order={2} mb="sm">
-            Add a Book/Book Chapter
+          <Title order={2} mb="sm" style={{ color: "#2185d0" }}>
+            {editingId ? "Edit Book/Book Chapter" : "Add a Book/Book Chapter"}
           </Title>
           <form onSubmit={handleSubmit}>
-            <Grid>
+            <Grid gutter="md">
               <Grid.Col span={6}>
                 <Select
                   label="Publish Type"
@@ -251,9 +376,10 @@ export default function Books() {
                   ]}
                   value={inputs.publishType}
                   onChange={(value) =>
-                    setInputs({ ...inputs, publishType: value || "" })
+                    setInputs({ ...inputs, publishType: value })
                   }
                   required
+                  style={{ padding: "10px" }} // Consistent padding
                 />
               </Grid.Col>
               <Grid.Col span={6}>
@@ -265,6 +391,7 @@ export default function Books() {
                     setInputs({ ...inputs, author: e.target.value })
                   }
                   required
+                  style={{ padding: "10px" }} // Consistent padding
                 />
               </Grid.Col>
               <Grid.Col span={6}>
@@ -276,6 +403,7 @@ export default function Books() {
                     setInputs({ ...inputs, publisher: e.target.value })
                   }
                   required
+                  style={{ padding: "10px" }} // Consistent padding
                 />
               </Grid.Col>
               <Grid.Col span={6}>
@@ -285,9 +413,10 @@ export default function Books() {
                   data={years}
                   value={inputs.year}
                   onChange={(value) =>
-                    setInputs({ ...inputs, year: value || "" })
+                    setInputs({ ...inputs, year: value })
                   }
                   required
+                  style={{ padding: "10px" }} // Consistent padding
                 />
               </Grid.Col>
               <Grid.Col span={12}>
@@ -299,16 +428,15 @@ export default function Books() {
                     setInputs({ ...inputs, title: e.target.value })
                   }
                   required
+                  style={{ padding: "10px" }} // Consistent padding
                 />
               </Grid.Col>
-              <Grid.Col
-                span={12}
-                style={{ display: "flex", justifyContent: "flex-end" }}
-              >
+              <Grid.Col span={12} style={{ display: "flex", justifyContent: "flex-end" }}>
                 <Button
                   type="submit"
                   loading={isLoading}
                   leftIcon={<FloppyDisk size={16} />}
+                  style={{ backgroundColor: "#2185d0", color: "#fff" }} // Custom button styling
                 >
                   Save
                 </Button>
@@ -316,40 +444,49 @@ export default function Books() {
             </Grid>
           </form>
         </Paper>
-
+  
         <Paper mt="xl" p="md" withBorder>
-          <Title order={3} mb="sm">
+          <Title order={3} mb="sm" style={{ color: "#2185d0" }}>
             Report:
           </Title>
           {achievements.length === 0 ? (
             <p>No Books Recorded Yet</p>
           ) : (
-            <Table>
+            <Table striped highlightOnHover>
               <thead>
                 <tr>
-                  <th>Sr</th>
-                  <th>Title of Book</th>
-                  <th>Authors</th>
-                  <th>Publish Type</th>
-                  <th>Year</th>
-                  <th>Publisher</th>
-                  <th>Action</th>
+                  <th style={{ textAlign: "left", padding: "10px", color: "#2185d0" }}>Sr</th>
+                  <th style={{ textAlign: "left", padding: "10px", color: "#2185d0" }}>Title of Book</th>
+                  <th style={{ textAlign: "left", padding: "10px", color: "#2185d0" }}>Authors</th>
+                  <th style={{ textAlign: "left", padding: "10px", color: "#2185d0" }}>Publish Type</th>
+                  <th style={{ textAlign: "left", padding: "10px", color: "#2185d0" }}>Year</th>
+                  <th style={{ textAlign: "left", padding: "10px", color: "#2185d0" }}>Publisher</th>
+                  <th style={{ textAlign: "left", padding: "10px", color: "#2185d0" }}>Action</th>
                 </tr>
               </thead>
               <tbody>
                 {achievements.map((achievement, index) => (
-                  <tr key={index}>
-                    <td>{index + 1}</td>
-                    <td>{achievement.title}</td>
-                    <td>{achievement.author}</td>
-                    <td>{achievement.publishType}</td>
-                    <td>{achievement.year}</td>
-                    <td>{achievement.publisher}</td>
-                    <td>
+                  <tr key={achievement.id}>
+                    <td style={{ textAlign: "left", padding: "10px" }}>{index + 1}</td>
+                    <td style={{ textAlign: "left", padding: "10px" }}>{achievement.title}</td>
+                    <td style={{ textAlign: "left", padding: "10px" }}>{achievement.authors}</td>
+                    <td style={{ textAlign: "left", padding: "10px" }}>{achievement.p_type}</td>
+                    <td style={{ textAlign: "left", padding: "10px" }}>{achievement.pyear}</td>
+                    <td style={{ textAlign: "left", padding: "10px" }}>{achievement.publisher}</td>
+                    <td style={{ textAlign: "left", padding: "10px" }}>
+                      <Button
+                        variant="subtle"
+                        color="blue"
+                        leftIcon={<Pencil size={16} />}
+                        onClick={() => handleEdit(achievement)}
+                      >
+                        Edit
+                      </Button>
                       <Button
                         variant="subtle"
                         color="red"
                         leftIcon={<Trash size={16} />}
+                        onClick={() => handleDelete(achievement)}
                       >
                         Delete
                       </Button>
@@ -363,4 +500,5 @@ export default function Books() {
       </Container>
     </MantineProvider>
   );
+  
 }

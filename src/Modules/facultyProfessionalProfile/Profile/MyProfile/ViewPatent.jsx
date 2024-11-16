@@ -18,7 +18,7 @@ export default function ViewPatent() {
   const fetchProjects = async () => {
     try {
       const response = await axios.get(
-        "http://127.0.0.1:8000/FPF/patents/pf_no/",
+        "http://127.0.0.1:8000/eis/patents/pf_no/",
       );
       const projects = response.data;
       // Sort projects by submission date in descending order
@@ -36,166 +36,121 @@ export default function ViewPatent() {
     fetchProjects();
   }, []);
 
-  // return (
-  //   <div className="bg-white p-6 rounded-lg shadow-2xl w-full max-w-[4910px] border-l-8 border-customSaveButtonColor">
-  //     <h1 className="text-lg font-medium text-gray-800 mb-1">Patents</h1>
-  //     <hr />
-
-  //     <div className="overflow-x-auto">
-  //       <table className="min-w-full border border-gray-300">
-  //         <thead>
-  //           <tr>
-  //             <th className="border border-gray-300 p-2">Title</th>
-  //             <th className="border border-gray-300 p-2">Patent Number</th>
-  //             <th className="border border-gray-300 p-2">Status</th>
-  //             <th className="border border-gray-300 p-2">Earnings</th>
-  //             <th className="border border-gray-300 p-2">Year</th>
-  //             <th className="border border-gray-300 p-2">Month</th>
-  //           </tr>
-  //         </thead>
-  //         <tbody>
-  //           {tableData.length > 0 ? (
-  //             tableData.map((project) => (
-  //               <tr key={project.id}>
-  //                 <td className="border border-gray-300 p-2">{project.title}</td>
-  //                 <td className="border border-gray-300 p-2">{project.p_no}</td>
-  //                 <td className="border border-gray-300 p-2">{project.status}</td>
-  //                 <td className="border border-gray-300 p-2">{project.earnings}</td>
-  //                 <td className="border border-gray-300 p-2">{project.p_year}</td>
-  //                 <td className="border border-gray-300 p-2">{project.a_month}</td>
-  //               </tr>
-  //             ))
-  //           ) : (
-  //             <tr>
-  //               <td colSpan="7" className="border border-gray-300 p-2 text-center">No projects found.</td>
-  //             </tr>
-  //           )}
-  //         </tbody>
-  //       </table>
-  //     </div>
-  //   </div>
-  // );
-  // return (
-  //   <MantineProvider withGlobalStyles withNormalizeCSS>
-  //     <Container size="xl" p={0}>
-  //       <Paper
-  //         shadow="sm"
-  //         p="md"
-  //         withBorder
-  //         style={{
-  //           borderLeft: "8px solid #228be6",
-  //           maxWidth: "4910px",
-  //           width: "100%",
-  //         }}
-  //       >
-  //         <Title
-  //           order={2}
-  //           mb="sm"
-  //           style={{ display: "flex", alignItems: "center", gap: "10px" }}
-  //         >
-  //           Patents
-  //         </Title>
-  //         {error && (
-  //           <Text color="red" mb="sm">
-  //             {error}
-  //           </Text>
-  //         )}
-  //         <ScrollArea>
-  //           <Table striped highlightOnHover style={{ minWidth: "100%" }}>
-  //             <thead>
-  //               <tr>
-  //                 <th>Title</th>
-  //                 <th>Patent Number</th>
-  //                 <th>Status</th>
-  //                 <th>Earnings</th>
-  //                 <th>Year</th>
-  //                 <th>Month</th>
-  //               </tr>
-  //             </thead>
-  //             <tbody>
-  //               {tableData.length > 0 ? (
-  //                 tableData.map((project) => (
-  //                   <tr key={project.id}>
-  //                     <td>{project.title}</td>
-  //                     <td>{project.p_no}</td>
-  //                     <td>{project.status}</td>
-  //                     <td>{project.earnings}</td>
-  //                     <td>{project.p_year}</td>
-  //                     <td>{project.a_month}</td>
-  //                   </tr>
-  //                 ))
-  //               ) : (
-  //                 <tr>
-  //                   <td colSpan={6} style={{ textAlign: "center" }}>
-  //                     No projects found.
-  //                   </td>
-  //                 </tr>
-  //               )}
-  //             </tbody>
-  //           </Table>
-  //         </ScrollArea>
-  //       </Paper>
-  //     </Container>
-  //   </MantineProvider>
-  // );
+  
   return (
     <MantineProvider withGlobalStyles withNormalizeCSS>
-      <Container size="xl" mt="xl">
+      <Container size="2xl" mt="xl">
         <Paper
           shadow="sm"
-          p="md"
+          p="lg"
           withBorder
-          style={{ borderLeft: "8px solid #228be6" }}
+          style={{
+            borderLeft: "8px solid #228be6",
+            backgroundColor: "#f9fafb",
+          }}
         >
           <Title
             order={2}
-            mb="md"
-            style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+            mb="lg"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.75rem",
+              color: "#228be6",
+            }}
           >
             <Certificate size={24} />
             Patents
           </Title>
+  
           {error && (
-            <Text color="red" mb="sm">
+            <Text color="red" mb="sm" style={{ textAlign: "center" }}>
               {error}
             </Text>
           )}
-          <ScrollArea>
+  
+          {/* <ScrollArea>
             <Table striped highlightOnHover style={{ minWidth: "100%" }}>
               <thead>
                 <tr>
-                  <th>Title</th>
-                  <th>Patent Number</th>
-                  <th>Status</th>
-                  <th>Earnings</th>
-                  <th>Year</th>
-                  <th>Month</th>
+                  <th style={{ textAlign: "left", padding: "8px" }}>Title</th>
+                  <th style={{ textAlign: "left", padding: "8px" }}>Patent Number</th>
+                  <th style={{ textAlign: "left", padding: "8px" }}>Status</th>
+                  <th style={{ textAlign: "left", padding: "8px" }}>Earnings</th>
+                  <th style={{ textAlign: "left", padding: "8px" }}>Year</th>
+                  <th style={{ textAlign: "left", padding: "8px" }}>Month</th>
                 </tr>
               </thead>
               <tbody>
                 {tableData.length > 0 ? (
                   tableData.map((project) => (
                     <tr key={project.id}>
-                      <td>{project.title}</td>
-                      <td>{project.p_no}</td>
-                      <td>{project.status}</td>
-                      <td>{project.earnings}</td>
-                      <td>{project.p_year}</td>
-                      <td>{project.a_month}</td>
+                      <td style={{ padding: "8px" }}>{project.title}</td>
+                      <td style={{ padding: "8px" }}>{project.p_no}</td>
+                      <td style={{ padding: "8px" }}>{project.status}</td>
+                      <td style={{ padding: "8px" }}>{project.earnings}</td>
+                      <td style={{ padding: "8px" }}>{project.p_year}</td>
+                      <td style={{ padding: "8px" }}>{project.a_month}</td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={6} style={{ textAlign: "center" }}>
+                    <td colSpan={6} style={{ textAlign: "center", padding: "8px" }}>
                       No patents found.
                     </td>
                   </tr>
                 )}
               </tbody>
             </Table>
-          </ScrollArea>
+          </ScrollArea> */}
+
+
+<ScrollArea>
+      <Table striped highlightOnHover withBorder style={{ minWidth: "100%", borderCollapse: "collapse" }}>
+        <thead>
+          <tr style={{ backgroundColor: "#f8f9fa" }}>
+            {["Title", "Patent Number", "Status", "Earnings", "Year", "Month"].map((header, index) => (
+              <th
+                key={index}
+                style={{
+                  textAlign: "center",
+                  padding: "12px",
+                  color: "#495057",
+                  fontWeight: "600",
+                  border: "1px solid #dee2e6",
+                  backgroundColor: "#f1f3f5",
+                }}
+              >
+                {header}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {tableData.length > 0 ? (
+            tableData.map((project) => (
+              <tr key={project.id} style={{ backgroundColor: "#fff" }}>
+                <td style={{ padding: "12px", textAlign: "center", border: "1px solid #dee2e6" }}>{project.title}</td>
+                <td style={{ padding: "12px", textAlign: "center", border: "1px solid #dee2e6" }}>{project.p_no}</td>
+                <td style={{ padding: "12px", textAlign: "center", border: "1px solid #dee2e6" }}>{project.status}</td>
+                <td style={{ padding: "12px", textAlign: "center", border: "1px solid #dee2e6" }}>{project.earnings}</td>
+                <td style={{ padding: "12px", textAlign: "center", border: "1px solid #dee2e6" }}>{project.p_year}</td>
+                <td style={{ padding: "12px", textAlign: "center", border: "1px solid #dee2e6" }}>{project.a_month}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={6} style={{ textAlign: "center", padding: "12px", border: "1px solid #dee2e6" }}>
+                No patents found.
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </Table>
+    </ScrollArea>
         </Paper>
       </Container>
     </MantineProvider>
   );
+  
 }

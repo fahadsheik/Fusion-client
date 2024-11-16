@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // import { Save } from "lucide-react";
 import axios from "axios";
 import {
@@ -25,35 +25,57 @@ export default function ExpertLecturesForm() {
   });
   const [lectures, setLectures] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [tableData, setTableData] = useState([]);
+  const [isEdit, setEdit] = useState(false);
+  const [Id, setId] = useState(0);
 
-  //   // Fetch the existing lectures when the component mounts
-  //   useEffect(() => {
-  //     const fetchLectures = async () => {
-  //       try {
-  //         const res = await axios.get('/lectures');
-  //         setLectures(res.data); // Assuming the response contains an array of lectures
-  //       } catch (error) {
-  //         console.error(error);
-  //       }
-  //     };
+  const fetchProjects = async () => {
+    try {
+      const response = await axios.get(
+        "http://127.0.0.1:8000/eis/talk/pf_no/",
+      );
+      const projects = response.data;
+      setTableData(projects);
+    } catch (error) {
+      console.error("Error fetching projects:", error);
+    }
+  };
 
-  //     fetchLectures();
-  //   }, []); // Empty dependency array ensures it only runs once when the component mounts
+  useEffect(() => {
+    fetchProjects();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       setIsLoading(true);
-      const res = await axios.post("/lecture_insert", inputs);
-      console.log(res.data);
 
-      // Add the new entry to the lectures array instead of fetching it again
-      setLectures((prevLectures) => [
-        ...prevLectures,
-        { ...inputs, id: res.data.id }, // Assuming the response contains the new entry's ID
-      ]);
+      const formData = new FormData();
+      formData.append("user_id", 5318);
+      formData.append("type", inputs.presentationType);
+      formData.append("place", inputs.place);
+      formData.append("title", inputs.title);
+      formData.append("l_date", inputs.date);
 
-      // Clear the input fields
+      if (isEdit === false) {
+        const res = await axios.post(
+          "http://127.0.0.1:8000/eis/talk/",
+          formData,
+        );
+        console.log(res.data);
+      } else {
+        formData.append("lec_id", Id);
+        const res = await axios.post(
+          "http://127.0.0.1:8000/eis/talk/",
+          formData,
+        );
+        console.log(res.data);
+        setEdit(false);
+        setId(0);
+      }
+
+      fetchProjects() // Refresh the list of achievements
+
       setInputs({
         presentationType: "",
         place: "",
@@ -67,240 +89,45 @@ export default function ExpertLecturesForm() {
     }
   };
 
-  // return (
-  //   <div className="bg-white p-6 rounded-lg shadow-2xl w-full max-w-[4910px] border-l-8 border-customSaveButtonColor">
-  //     <h1 className="text-lg font-medium text-gray-800 mb-1">Add a Expert Lecture/Invited Talk</h1>
-  //     <hr />
-  //     <form className="space-y-6 my-5" onSubmit={handleSubmit}>
-  //       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-  //         <div>
-  //           <label htmlFor="presentationType" className="block text-sm font-medium text-gray-700">Presentation Type</label>
-  //           <select
-  //             id="presentationType"
-  //             required
-  //             className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm"
-  //             value={inputs.presentationType}
-  //             onChange={(e) => setInputs({ ...inputs, presentationType: e.target.value })}
-  //           >
-  //             <option value="">Select Presentation Type</option>
-  //             <option value="Expert Lecture">Expert Lecture</option>
-  //             <option value="Invited Talk">Invited Talk</option>
-  //             {/* Add more options if needed */}
-  //           </select>
-  //         </div>
 
-  //         <div>
-  //           <label htmlFor="place" className="block text-sm font-medium text-gray-700">Place</label>
-  //           <input
-  //             type="text"
-  //             required
-  //             id="place"
-  //             placeholder="Place"
-  //             className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm"
-  //             value={inputs.place}
-  //             onChange={(e) => setInputs({ ...inputs, place: e.target.value })}
-  //           />
-  //         </div>
+  const handleEdit = (lecture) => {
+    setInputs({
+      presentationType: lecture.l_type,
+      place: lecture.place,
+      date: lecture.l_date ? new Date(lecture.l_date) : null,
+      title: lecture.title,
+    });
+  
+    setId(lecture.id);
+    setEdit(true);
+  };
 
-  //         <div>
-  //           <label htmlFor="date" className="block text-sm font-medium text-gray-700">Date</label>
-  //           <input
-  //             type="date"
-  //             required
-  //             id="date"
-  //             className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm"
-  //             value={inputs.date}
-  //             onChange={(e) => setInputs({ ...inputs, date: e.target.value })}
-  //           />
-  //         </div>
 
-  //         <div>
-  //           <label htmlFor="title" className="block text-sm font-medium text-gray-700">Title</label>
-  //           <input
-  //             type="text"
-  //             required
-  //             id="title"
-  //             placeholder="Title"
-  //             className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm"
-  //             value={inputs.title}
-  //             onChange={(e) => setInputs({ ...inputs, title: e.target.value })}
-  //           />
-  //         </div>
-  //       </div>
+  const handleDelete = async (talkId) => {
+    if (window.confirm("Are you sure you want to delete this achievement?")) {
+      try {
+        await axios.post(
+          `http://127.0.0.1:8000/eis/emp_expert_lecturesDelete/`,
+          new URLSearchParams({ pk: talkId }),
+        ); // Adjust the delete URL as needed
+        fetchProjects(); // Refresh the project list after deletion
+      } catch (error) {
+        console.error("Error deleting project:", error);
+      }
+    }
+  };
 
-  //       <button
-  //         type="submit"
-  //         className="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
-  //         disabled={isLoading}
-  //       >
-  //         {isLoading ? 'Saving...' : 'Save'}
-  //       </button>
-  //     </form>
-
-  //     {/* Display the list of lectures */}
-  //     <h2 className="text-lg font-medium text-gray-800 mb-2">Report:</h2>
-  //     <table className="min-w-full bg-white border border-gray-200 shadow-sm rounded-md">
-  //       <thead className="bg-gray-100">
-  //         <tr>
-  //           <th className="py-2 px-4 border-b">Sr.</th>
-  //           <th className="py-2 px-4 border-b">Presented</th>
-  //           <th className="py-2 px-4 border-b">Title</th>
-  //           <th className="py-2 px-4 border-b">Place</th>
-  //           <th className="py-2 px-4 border-b">Date</th>
-  //         </tr>
-  //       </thead>
-  //       <tbody>
-  //         {lectures.map((lecture, index) => (
-  //           <tr key={lecture.id}>
-  //             <td className="py-2 px-4 border-b">{index + 1}</td>
-  //             <td className="py-2 px-4 border-b">{lecture.presentationType}</td>
-  //             <td className="py-2 px-4 border-b">{lecture.title}</td>
-  //             <td className="py-2 px-4 border-b">{lecture.place}</td>
-  //             <td className="py-2 px-4 border-b">{lecture.date}</td>
-  //           </tr>
-  //         ))}
-  //       </tbody>
-  //     </table>
-  //   </div>
-  // );
-  // return (
-  //   <MantineProvider withGlobalStyles withNormalizeCSS>
-  //     <Container size="xl">
-  //       <Paper
-  //         shadow="sm"
-  //         p="md"
-  //         withBorder
-  //         style={{ borderLeft: "8px solid #228be6" }}
-  //       >
-  //         <Title order={2} mb="sm">
-  //           Add a Expert Lecture/Invited Talk
-  //         </Title>
-  //         <form onSubmit={handleSubmit}>
-  //           <Grid>
-  //             <Grid.Col span={4}>
-  //               <Select
-  //                 label="Presentation Type"
-  //                 placeholder="Select Presentation Type"
-  //                 data={[
-  //                   { value: "Expert Lectures", label: "Expert Lectures" },
-  //                   { value: "Invited Talks", label: "Invited Talks" },
-  //                 ]}
-  //                 value={inputs.presentationType}
-  //                 onChange={(value) =>
-  //                   setInputs({ ...inputs, presentationType: value || "" })
-  //                 }
-  //                 required
-  //               />
-  //             </Grid.Col>
-  //             <Grid.Col span={4}>
-  //               <TextInput
-  //                 label="Place"
-  //                 placeholder="Place"
-  //                 value={inputs.place}
-  //                 onChange={(e) =>
-  //                   setInputs({ ...inputs, place: e.target.value })
-  //                 }
-  //                 required
-  //               />
-  //             </Grid.Col>
-  //             <Grid.Col span={4}>
-  //               <DateInput
-  //                 label="Date"
-  //                 placeholder="Select date"
-  //                 value={inputs.date}
-  //                 onChange={(value) => setInputs({ ...inputs, date: value })}
-  //                 required
-  //               />
-  //             </Grid.Col>
-  //             <Grid.Col span={12}>
-  //               <TextInput
-  //                 label="Title"
-  //                 placeholder="Title"
-  //                 value={inputs.title}
-  //                 onChange={(e) =>
-  //                   setInputs({ ...inputs, title: e.target.value })
-  //                 }
-  //                 required
-  //               />
-  //             </Grid.Col>
-  //             <Grid.Col
-  //               span={12}
-  //               style={{ display: "flex", justifyContent: "flex-end" }}
-  //             >
-  //               <Button
-  //                 type="submit"
-  //                 loading={isLoading}
-  //                 leftIcon={<FloppyDisk size={16} />}
-  //               >
-  //                 Save
-  //               </Button>
-  //             </Grid.Col>
-  //           </Grid>
-  //         </form>
-  //       </Paper>
-
-  //       <Paper mt="xl" p="md" withBorder>
-  //         <Title order={3} mb="sm">
-  //           Report:
-  //         </Title>
-  //         <div style={{ overflowX: "auto", maxHeight: "400px" }}>
-  //           {lectures.length === 0 ? (
-  //             <p>No Lectures/Talks Recorded Yet</p>
-  //           ) : (
-  //             <Table striped highlightOnHover>
-  //               <thead>
-  //                 <tr>
-  //                   <th>Sr.</th>
-  //                   <th>Presented</th>
-  //                   <th>Title</th>
-  //                   <th>Place</th>
-  //                   <th>Date</th>
-  //                   <th>Action</th>
-  //                 </tr>
-  //               </thead>
-  //               <tbody>
-  //                 {lectures.map((lecture, index) => (
-  //                   <tr key={index}>
-  //                     <td>{index + 1}</td>
-  //                     <td>{lecture.presentationType}</td>
-  //                     <td>{lecture.title}</td>
-  //                     <td>{lecture.place}</td>
-  //                     <td>
-  //                       {lecture.date instanceof Date
-  //                         ? lecture.date.toLocaleDateString()
-  //                         : ""}
-  //                     </td>
-  //                     <td>
-  //                       <Button
-  //                         variant="subtle"
-  //                         color="red"
-  //                         compact
-  //                         leftIcon={<Trash size={14} />}
-  //                         onClick={() => handleDelete(index)}
-  //                       >
-  //                         Delete
-  //                       </Button>
-  //                     </td>
-  //                   </tr>
-  //                 ))}
-  //               </tbody>
-  //             </Table>
-  //           )}
-  //         </div>
-  //       </Paper>
-  //     </Container>
-  //   </MantineProvider>
-  // );
+  
   return (
     <MantineProvider withGlobalStyles withNormalizeCSS>
       <Container size="2xl" mt="xl">
         <Paper
           shadow="xs"
-          p="md"
+          p="lg"
           withBorder
-          style={{ borderLeft: "8px solid #2185d0" }}
+          style={{ borderLeft: "8px solid #2185d0", backgroundColor: "#f9fafb" }} // Light background for contrast
         >
-          <Title order={2} mb="sm">
+          <Title order={2} mb="lg" style={{ color: "#2185d0" }}> {/* Consistent color with border */}
             Add an Expert Lecture/Invited Talk
           </Title>
           <form onSubmit={handleSubmit}>
@@ -310,8 +137,8 @@ export default function ExpertLecturesForm() {
                   label="Presentation Type"
                   placeholder="Select Presentation Type"
                   data={[
-                    { value: "Expert Lectures", label: "Expert Lectures" },
-                    { value: "Invited Talks", label: "Invited Talks" },
+                    { value: "EL", label: "Expert Lecture (EL)" },
+                    { value: "IT", label: "Invited Talk (IT)" },
                   ]}
                   value={inputs.presentationType}
                   onChange={(value) =>
@@ -351,62 +178,62 @@ export default function ExpertLecturesForm() {
                   required
                 />
               </Grid.Col>
+              <Grid.Col span={12} style={{ display: "flex", justifyContent: "flex-end" }}>
+                <Button
+                  type="submit"
+                  mt="md"
+                  loading={isLoading}
+                  leftIcon={<FloppyDisk size={16} />}
+                  style={{ backgroundColor: "#2185d0", color: "#fff" }} // Custom button styling
+                >
+                  Save
+                </Button>
+              </Grid.Col>
             </Grid>
-            <Button
-              type="submit"
-              mt="md"
-              loading={isLoading}
-              leftIcon={<FloppyDisk size={16} />}
-            >
-              Save
-            </Button>
           </form>
         </Paper>
-
-        <Paper mt="xl" p="md" withBorder>
-          <Title order={3} mb="sm">
+  
+        {/* <Paper mt="xl" p="lg" withBorder style={{ backgroundColor: "#ffffff" }}>
+          <Title order={3} mb="lg" style={{ color: "#2185d0" }}>
             Report:
           </Title>
-          <Table>
+          <Table striped highlightOnHover>
             <thead>
               <tr>
-                <th>Sr.</th>
-                <th>Presented</th>
-                <th>Title</th>
-                <th>Place</th>
-                <th>Date</th>
-                <th>Actions</th>
+                <th style={{ textAlign: "left", padding: "10px" }}>Sr.</th>
+                <th style={{ textAlign: "left", padding: "10px" }}>Presented</th>
+                <th style={{ textAlign: "left", padding: "10px" }}>Title</th>
+                <th style={{ textAlign: "left", padding: "10px" }}>Place</th>
+                <th style={{ textAlign: "left", padding: "10px" }}>Date</th>
+                <th style={{ textAlign: "left", padding: "10px" }}>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {lectures.length === 0 ? (
+              {tableData.length === 0 ? (
                 <tr>
-                  <td colSpan={6}>No Lectures/Talks Recorded Yet</td>
+                  <td colSpan={6} style={{ textAlign: "center", padding: "10px" }}>
+                    No Lectures/Talks Recorded Yet
+                  </td>
                 </tr>
               ) : (
-                lectures.map((lecture, index) => (
-                  <tr key={index}>
-                    <td>{index + 1}</td>
-                    <td>{lecture.presentationType}</td>
-                    <td>{lecture.title}</td>
-                    <td>{lecture.place}</td>
-                    <td>
-                      {lecture.date instanceof Date
-                        ? lecture.date.toLocaleDateString()
-                        : ""}
-                    </td>
-                    <td>
+                tableData.map((lecture) => (
+                  <tr key={lecture.id}>
+                    <td style={{ textAlign: "left", padding: "10px" }}>{lecture.id}</td>
+                    <td style={{ textAlign: "left", padding: "10px" }}>{lecture.l_type}</td>
+                    <td style={{ textAlign: "left", padding: "10px" }}>{lecture.title}</td>
+                    <td style={{ textAlign: "left", padding: "10px" }}>{lecture.place}</td>
+                    <td style={{ textAlign: "left", padding: "10px" }}>{lecture.l_date}</td>
+                    <td style={{ textAlign: "left", padding: "10px" }}>
                       <ActionIcon
                         color="blue"
-                        onClick={() => console.log("Edit", lecture)}
+                        onClick={() => handleEdit(lecture)}
                       >
                         <PencilSimple size={16} />
                       </ActionIcon>
-                      {/* <ActionIcon
+                      <ActionIcon
                         color="red"
-                        onClick={() => handleDelete(index)}
-                      > */}
-                      <ActionIcon color="red">
+                        onClick={() => handleDelete(lecture.id)}
+                      >
                         <Trash size={16} />
                       </ActionIcon>
                     </td>
@@ -415,8 +242,75 @@ export default function ExpertLecturesForm() {
               )}
             </tbody>
           </Table>
-        </Paper>
+        </Paper> */}
+
+
+<Paper
+      mt="xl"
+      p="lg"
+      withBorder
+      shadow="sm"
+      style={{
+        backgroundColor: "#ffffff",
+        border: "1px solid #ddd",
+        borderRadius: "8px",
+        overflow: "hidden",
+        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+      }}
+    >
+      <Title order={3} mb="lg" style={{ color: "#2185d0" }}>
+        Report:
+      </Title>
+      <Table striped highlightOnHover withBorder style={{ borderCollapse: "collapse", width: "100%" }}>
+        <thead>
+          <tr style={{ backgroundColor: "#f8f9fa" }}>
+            {["Sr.", "Presented", "Title", "Place", "Date", "Actions"].map((header, index) => (
+              <th
+                key={index}
+                style={{
+                  padding: "12px",
+                  textAlign: "center",
+                  border: "1px solid #dee2e6",
+                  color: "#495057",
+                  fontWeight: "600",
+                }}
+              >
+                {header}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {tableData.length === 0 ? (
+            <tr>
+              <td colSpan={6} style={{ textAlign: "center", padding: "10px", border: "1px solid #dee2e6" }}>
+                No Lectures/Talks Recorded Yet
+              </td>
+            </tr>
+          ) : (
+            tableData.map((lecture, index) => (
+              <tr key={lecture.id} style={{ backgroundColor: "#fff" }}>
+                <td style={{ padding: "12px", textAlign: "center", border: "1px solid #dee2e6" }}>{index + 1}</td>
+                <td style={{ padding: "12px", textAlign: "center", border: "1px solid #dee2e6" }}>{lecture.l_type}</td>
+                <td style={{ padding: "12px", textAlign: "center", border: "1px solid #dee2e6" }}>{lecture.title}</td>
+                <td style={{ padding: "12px", textAlign: "center", border: "1px solid #dee2e6" }}>{lecture.place}</td>
+                <td style={{ padding: "12px", textAlign: "center", border: "1px solid #dee2e6" }}>{lecture.l_date}</td>
+                <td style={{ padding: "12px", textAlign: "center", border: "1px solid #dee2e6" }}>
+                  <ActionIcon color="blue" onClick={() => handleEdit(lecture)} variant="light" style={{ marginRight: "8px" }}>
+                    <PencilSimple size={16} />
+                  </ActionIcon>
+                  <ActionIcon color="red" onClick={() => handleDelete(lecture.id)} variant="light">
+                    <Trash size={16} />
+                  </ActionIcon>
+                </td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </Table>
+    </Paper>
       </Container>
     </MantineProvider>
   );
+  
 }
