@@ -2,10 +2,10 @@
 import { useState } from "react";
 import { Card, Box, Progress, Button, ActionIcon, Title } from "@mantine/core";
 import { Trash, Pause, X, Play, ArrowLeft } from "@phosphor-icons/react";
-import { notifications } from "@mantine/notifications"; // Import for notifications
+import { notifications } from "@mantine/notifications";
 
-export default function FileStatusPage({ onBack, onDelete }) {
-  const [loading, setLoading] = useState(true); // Simulate loading state
+export default function FileStatusPage({ onBack }) {
+  const [loading] = useState(true); // Simulate loading state
   const [progress] = useState(65); // Example progress percentage
   const [isPaused, setIsPaused] = useState(false);
 
@@ -21,24 +21,29 @@ export default function FileStatusPage({ onBack, onDelete }) {
     });
   };
 
-  // Function to cancel the loading
+  // Function to cancel the loading with redirection after 1 second
   const handleCancel = () => {
-    setLoading(false);
     notifications.show({
       title: "Loading Cancelled",
       message: "The loading process has been cancelled.",
       color: "red",
     });
+    setTimeout(() => {
+      onBack(); // Redirect to the previous section
+    }, 1000); // 1 second delay
   };
 
-  // Function to delete the file
+  // Function to delete the file with redirection after 1 second
   const handleDelete = () => {
+    console.log("Deleting file...");
     notifications.show({
       title: "File Deleted",
       message: "The file has been successfully deleted.",
       color: "red",
     });
-    onDelete();
+    setTimeout(() => {
+      onBack(); // Redirect to the previous section
+    }, 1000); // 1 second delay
   };
 
   return (
@@ -114,7 +119,7 @@ export default function FileStatusPage({ onBack, onDelete }) {
             <Button
               leftIcon={<X size={24} />}
               color="red"
-              onClick={handleCancel}
+              onClick={handleCancel} // Call handleCancel on click
               style={{ width: "10%", marginRight: "10px", marginLeft: "70%" }}
             >
               Cancel
