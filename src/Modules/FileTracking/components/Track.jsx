@@ -10,6 +10,7 @@ import {
   Tooltip,
 } from "@mantine/core";
 import { Archive, Eye } from "@phosphor-icons/react";
+import { notifications } from "@mantine/notifications";
 import ViewFileStatus from "./ViewFileStatus";
 
 export default function Track() {
@@ -45,6 +46,17 @@ export default function Track() {
     setSelectedFile(null);
   };
 
+  const handleFinishFile = (fileID) => {
+    // Show success notification
+    notifications.show({
+      title: "Success",
+      message: `File with ID: ${fileID} finished successfully!`,
+      color: "green",
+    });
+    const updatedFiles = files.filter((file) => file.fileID !== fileID);
+    setFiles(updatedFiles);
+  };
+
   return (
     <Card
       shadow="sm"
@@ -64,8 +76,7 @@ export default function Track() {
           <Title order={3} mb="md">
             File Status
           </Title>
-          <ViewFileStatus file={selectedFile} onBack={handleBack} />{" "}
-          {/* Updated component */}
+          <ViewFileStatus file={selectedFile} onBack={handleBack} />
         </div>
       ) : (
         <Box
@@ -148,12 +159,6 @@ export default function Track() {
                           width: "2rem",
                           height: "2rem",
                         }}
-                        onMouseEnter={(e) => {
-                          e.target.style.backgroundColor = "#ffebee";
-                        }}
-                        onMouseLeave={(e) => {
-                          e.target.style.backgroundColor = "transparent";
-                        }}
                       >
                         <Archive size="1rem" />
                       </ActionIcon>
@@ -212,12 +217,7 @@ export default function Track() {
                         fontSize: "0.9rem",
                         padding: "0.5rem 1rem",
                       }}
-                      onMouseEnter={(e) => {
-                        e.target.style.backgroundColor = "#e3f2fd";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.target.style.backgroundColor = "white";
-                      }}
+                      onClick={() => handleFinishFile(file.fileID)}
                     >
                       Finish File
                     </Button>
@@ -238,13 +238,7 @@ export default function Track() {
                         width: "2rem",
                         height: "2rem",
                       }}
-                      onClick={() => handleViewFile(file)} // View file on click
-                      onMouseEnter={(e) => {
-                        e.target.style.backgroundColor = "#e0e0e0";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.target.style.backgroundColor = "white";
-                      }}
+                      onClick={() => handleViewFile(file)}
                     >
                       <Eye size="1rem" />
                     </ActionIcon>
