@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Card,
   Box,
@@ -15,11 +15,42 @@ import {
   Trash,
 } from "@phosphor-icons/react";
 import { notifications } from "@mantine/notifications";
+import axios from "axios";
 
 // eslint-disable-next-line react/prop-types
-export default function ViewFiles({ onBack, onDelete }) {
+export default function View({ onBack, onDelete }) {
   const [activeSection, setActiveSection] = useState(null);
+  // eslint-disable-next-line no-undef
+  const file_id = null;
+  useEffect(() => {
+    const getFiles = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/filetracking/api/file/${file_id}`,
 
+          {
+            params: {
+              username: "atul",
+              designation: "Professor",
+              src_module: "filetracking",
+            },
+            withCredentials: true,
+            headers: {
+              Authorization: `Token ${localStorage.getItem("authToken")}`,
+              "Content-Type": "multipart/form-data",
+            },
+          },
+        );
+        // Set the response data to the files state
+        console.log(response.data);
+      } catch (err) {
+        console.error("Error fetching files:", err);
+      }
+    };
+
+    // Call the getFiles function to fetch data on component mount
+    getFiles();
+  }, []);
   const toggleSection = (section) => {
     setActiveSection(activeSection === section ? null : section);
   };
