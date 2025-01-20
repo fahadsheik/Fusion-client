@@ -16,6 +16,12 @@ import { ArrowArcRight, Eye } from "@phosphor-icons/react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import View from "./ViewFile";
+import {
+  forwardFileRoute,
+  outboxRoute,
+  designationsRoute,
+  createFileRoute,
+} from "../../../routes/filetrackingRoutes";
 
 export default function Outboxfunc() {
   const [files, setFiles] = useState([]);
@@ -45,7 +51,7 @@ export default function Outboxfunc() {
     const getFiles = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/filetracking/api/outbox/`,
+          `${outboxRoute}`,
 
           {
             params: {
@@ -72,7 +78,7 @@ export default function Outboxfunc() {
   }, []);
   const fetchRoles = async () => {
     const response = await axios.get(
-      `http://localhost:8000/filetracking/api/designations/${receiver_username}`,
+      `${designationsRoute}${receiver_username}`,
       {
         headers: {
           Authorization: `Token ${token}`,
@@ -92,15 +98,12 @@ export default function Outboxfunc() {
 
   const handleSubmitForward = async () => {
     try {
-      let response = await axios.get(
-        `http://localhost:8000/filetracking/api/file/${forwardFile.id}`,
-        {
-          withCredentials: true,
-          headers: {
-            Authorization: `Token ${token}`,
-          },
+      let response = await axios.get(`${createFileRoute}${forwardFile.id}`, {
+        withCredentials: true,
+        headers: {
+          Authorization: `Token ${token}`,
         },
-      );
+      });
 
       setForwardFile(response.data);
       const fileAttachment =
@@ -120,7 +123,7 @@ export default function Outboxfunc() {
       console.log(formData);
       console.log(forwardFile.id);
       response = await axios.post(
-        `http://localhost:8000/filetracking/api/forwardfile/${forwardFile.id}/`,
+        `${forwardFileRoute}${forwardFile.id}/`,
         formData,
         {
           withCredentials: true,

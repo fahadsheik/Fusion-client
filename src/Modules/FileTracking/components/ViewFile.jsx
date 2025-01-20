@@ -19,6 +19,7 @@ import {
 } from "@phosphor-icons/react";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
+import { createFileRoute } from "../../../routes/filetrackingRoutes";
 
 export default function View({ onBack, fileID, updateFiles }) {
   const [activeSection, setActiveSection] = useState(null);
@@ -33,15 +34,12 @@ export default function View({ onBack, fileID, updateFiles }) {
   useEffect(() => {
     const getFile = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8000/filetracking/api/file/${fileID}`,
-          {
-            withCredentials: true,
-            headers: {
-              Authorization: `Token ${token}`,
-            },
+        const response = await axios.get(`${createFileRoute}${fileID}`, {
+          withCredentials: true,
+          headers: {
+            Authorization: `Token ${token}`,
           },
-        );
+        });
         setFile(response.data);
       } catch (err) {
         console.error("Error fetching files:", err);
@@ -55,15 +53,12 @@ export default function View({ onBack, fileID, updateFiles }) {
   };
 
   const handleDelete = async () => {
-    const response = await axios.delete(
-      `http://localhost:8000/filetracking/api/file/${fileID}`,
-      {
-        withCredentials: true,
-        headers: {
-          Authorization: `Token ${token}`,
-        },
+    const response = await axios.delete(`${createFileRoute}${fileID}`, {
+      withCredentials: true,
+      headers: {
+        Authorization: `Token ${token}`,
       },
-    );
+    });
     if (response.status === 204) {
       updateFiles();
       onBack();

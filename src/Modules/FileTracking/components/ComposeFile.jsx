@@ -16,6 +16,10 @@ import { Upload, FloppyDisk, Trash } from "@phosphor-icons/react";
 import { notifications } from "@mantine/notifications";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import {
+  designationsRoute,
+  createFileRoute,
+} from "../../../routes/filetrackingRoutes";
 
 axios.defaults.withCredentials = true;
 // eslint-disable-next-line no-unused-vars
@@ -61,7 +65,7 @@ export default function Compose() {
   }, [roles, receiverRoles]);
   const fetchRoles = async () => {
     const response = await axios.get(
-      `http://localhost:8000/filetracking/api/designations/${receiver_username}`,
+      `${designationsRoute}${receiver_username}`,
       {
         headers: {
           Authorization: `Token ${token}`,
@@ -73,7 +77,7 @@ export default function Compose() {
 
   const handleSaveDraft = async () => {
     // const response = await axios.post(
-    //   "http://localhost:8000/filetracking/api/createdraft/",
+    //   `${draftRoute}`,
     //   {
     //     designation: uploaderRole,
     //     src_module: module,
@@ -120,15 +124,11 @@ export default function Compose() {
       formData.append("receiver_designation", receiver_designation);
       formData.append("file", fileAttachment); // Ensure this is the file object
       formData.append("src_module", module);
-      const response = await axios.post(
-        "http://localhost:8000/filetracking/api/file/",
-        formData,
-        {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
+      const response = await axios.post(`${createFileRoute}`, formData, {
+        headers: {
+          Authorization: `Token ${token}`,
         },
-      );
+      });
       if (response.status === 201) {
         notifications.show({
           title: "File sent successfully",

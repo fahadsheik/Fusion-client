@@ -12,6 +12,10 @@ import { Archive, Eye } from "@phosphor-icons/react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import ViewFileStatus from "./ViewFileStatus";
+import {
+  getFilesRoute,
+  createArchiveRoute,
+} from "../../../routes/filetrackingRoutes";
 
 export default function Track() {
   const [files, setFiles] = useState([]);
@@ -28,7 +32,7 @@ export default function Track() {
   const handleArchive = async (fileID) => {
     // eslint-disable-next-line no-unused-vars
     const response = await axios.post(
-      "http://localhost:8000/filetracking/api/createarchive/",
+      `${createArchiveRoute}`,
       {
         file_id: fileID,
       },
@@ -60,7 +64,7 @@ export default function Track() {
     const getFiles = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/filetracking/api/inbox/`,
+          `${getFilesRoute}`,
 
           {
             params: {

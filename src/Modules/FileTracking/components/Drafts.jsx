@@ -13,6 +13,10 @@ import { notifications } from "@mantine/notifications";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import EditDraft from "./EditDraft";
+import {
+  createArchiveRoute,
+  getDraftRoute,
+} from "../../../routes/filetrackingRoutes";
 
 export default function Draft() {
   const [files, setFiles] = useState([]);
@@ -26,7 +30,7 @@ export default function Draft() {
     const getFiles = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/filetracking/api/draft/`,
+          `${getDraftRoute}`,
 
           {
             params: {
@@ -57,7 +61,7 @@ export default function Draft() {
   const handleArchive = async (fileID) => {
     // eslint-disable-next-line no-unused-vars
     const response = await axios.post(
-      "http://localhost:8000/filetracking/api/createarchive/",
+      `${createArchiveRoute}`,
       {
         file_id: fileID,
       },

@@ -4,6 +4,10 @@ import { ArrowArcLeft, Eye } from "@phosphor-icons/react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import View from "./ViewFile";
+import {
+  getArchiveRoute,
+  unArchiveRoute,
+} from "../../../routes/filetrackingRoutes";
 
 export default function ArchiveFiles() {
   const [files, setFiles] = useState([]);
@@ -16,7 +20,7 @@ export default function ArchiveFiles() {
     const getFiles = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/filetracking/api/archive/`,
+          `${getArchiveRoute}`,
 
           {
             params: {
@@ -48,7 +52,7 @@ export default function ArchiveFiles() {
   const handleToggleArchive = async (fileID) => {
     // eslint-disable-next-line no-unused-vars
     const response = await axios.post(
-      "http://localhost:8000/filetracking/api/unarchive/",
+      `${unArchiveRoute}`,
       {
         file_id: fileID,
       },
