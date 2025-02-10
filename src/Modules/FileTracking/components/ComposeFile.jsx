@@ -11,6 +11,7 @@ import {
   Text,
   Select,
   Group,
+  Autocomplete,
 } from "@mantine/core";
 import { Upload, FloppyDisk, Trash } from "@phosphor-icons/react";
 import { notifications } from "@mantine/notifications";
@@ -19,12 +20,14 @@ import axios from "axios";
 import {
   designationsRoute,
   createFileRoute,
+  getUsernameRoute,
 } from "../../../routes/filetrackingRoutes";
 
 axios.defaults.withCredentials = true;
 // eslint-disable-next-line no-unused-vars
 export default function Compose() {
-  const [file, setFile] = React.useState(null);
+  const [files, setFiles] = React.useState(null);
+  const [usernameSuggestions, setUsernameSuggestions] = React.useState([]);
   const [receiver_username, setReceiverUsername] = React.useState("");
   const [receiver_designation, setReceiverDesignation] = React.useState("");
   const [receiver_designations, setReceiverDesignations] = React.useState("");
@@ -45,10 +48,11 @@ export default function Compose() {
     : [];
 
   const handleFileChange = (uploadedFile) => {
-    setFile(uploadedFile);
+    console.log(uploadedFile.size);
+    setFiles(uploadedFile);
   };
   const removeFile = () => {
-    setFile(null);
+    setFiles(null);
   };
   const postSubmit = () => {
     removeFile();
@@ -63,6 +67,41 @@ export default function Compose() {
     setDesignation(roles);
     console.log(receiverRoles);
   }, [roles, receiverRoles]);
+
+  useEffect(() => {
+    let isMounted = true;
+    const getUsernameSuggestion = async () => {
+      try {
+        const response = await axios.post(
+          `${getUsernameRoute}`,
+          { value: receiver_username },
+          {
+            headers: { Authorization: `Token ${token}` },
+          },
+        );
+        const users = JSON.parse(response.data.users);
+        // Ensure response.data.users is an array before mapping
+        if (response.data && Array.isArray(users)) {
+          const suggestedUsernames = users.map((user) => user.fields.username);
+          console.log(suggestedUsernames);
+          if (isMounted) {
+            setUsernameSuggestions(suggestedUsernames);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching username suggestion:", error);
+      }
+    };
+
+    if (receiver_username) {
+      getUsernameSuggestion();
+    }
+
+    return () => {
+      isMounted = false; // Cleanup to prevent memory leaks
+    };
+  }, [receiver_username, token]);
+
   const fetchRoles = async () => {
     const response = await axios.get(
       `${designationsRoute}${receiver_username}`,
@@ -98,7 +137,7 @@ export default function Compose() {
     postSubmit();
   };
   const handleCreateFile = async () => {
-    if (!file) {
+    if (!files) {
       notifications.show({
         title: "Error",
         message: "Please upload a file",
@@ -110,19 +149,21 @@ export default function Compose() {
     }
 
     try {
-      const fileAttachment =
-        file.upload_file instanceof File
-          ? file.upload_file
-          : new File([file.upload_file], "uploaded_file", {
-              type: "application/octet-stream",
-            });
       const formData = new FormData();
+      files.forEach((fileItem, index) => {
+        const fileAttachment =
+          fileItem instanceof File
+            ? fileItem
+            : new File([fileItem], `uploaded_file_${index}`, {
+                type: "application/octet-stream",
+              });
+        formData.append("files", fileAttachment); // Append each file
+      });
       formData.append("subject", subject);
       formData.append("description", description);
       formData.append("designation", designation);
       formData.append("receiver_username", receiver_username);
       formData.append("receiver_designation", receiver_designation);
-      formData.append("file", fileAttachment); // Ensure this is the file object
       formData.append("src_module", module);
       const response = await axios.post(`${createFileRoute}`, formData, {
         headers: {
@@ -151,7 +192,6 @@ export default function Compose() {
       withBorder
       style={{ backgroundColor: "#F5F7F8", position: "relative" }}
     >
-      {/* Icon at Top Right with Text Beneath */}
       <Box
         style={{
           position: "absolute",
@@ -222,14 +262,14 @@ export default function Compose() {
           placeholder="Upload file"
           accept="application/pdf,image/jpeg,image/png"
           icon={<Upload size={16} />}
-          value={file} // Set the file state as the value
+          value={files} // Set the file state as the value
           onChange={handleFileChange} // Update file state on change
           mb="sm"
           withAsterisk
+          multiple
         />
-        {file && (
+        {files && (
           <Group position="apart" mt="sm">
-            <Text>{file.name}</Text>
             <Button
               leftIcon={<Trash size={16} />}
               color="red"
@@ -240,13 +280,14 @@ export default function Compose() {
             </Button>
           </Group>
         )}
-        <TextInput
+        <Autocomplete
           label="Forward To"
           placeholder="Enter forward recipient"
           value={receiver_username}
-          onChange={(e) => {
+          data={usernameSuggestions} // Pass the array of suggestions
+          onChange={(value) => {
             setReceiverDesignation("");
-            setReceiverUsername(e.target.value);
+            setReceiverUsername(value);
           }}
           mb="sm"
         />
@@ -260,7 +301,6 @@ export default function Compose() {
           mb="sm"
           onChange={(value) => setReceiverDesignation(value)}
         />
-
         <Button
           type="submit"
           color="blue"
