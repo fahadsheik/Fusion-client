@@ -175,6 +175,7 @@ export default function View({ onBack, fileID, updateFiles }) {
         {file?.upload_file && (
           <Button
             onClick={() => {
+              console.log(file);
               window.open(
                 `http://localhost:8000${file?.upload_file}`,
                 "_blank",

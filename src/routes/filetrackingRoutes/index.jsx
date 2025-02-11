@@ -10,3 +10,4 @@ export const unArchiveRoute = `${host}/filetracking/api/unarchive/`;
 export const forwardFileRoute = `${host}/filetracking/api/forwardfile/`;
 export const outboxRoute = `${host}/filetracking/api/outbox/`;
 export const historyRoute = `${host}/filetracking/api/history/`;
+export const getUsernameRoute = `${host}/filetracking/api/dropdown/`;
